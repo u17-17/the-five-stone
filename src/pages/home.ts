@@ -1,12 +1,48 @@
 import type { PageComponent } from '../types';
 import { getPageParams, navigateTo } from '../router';
+import { analyticsEvents, trackEvent } from '../lib/analytics';
 
 const products = [
-  { id: 'red', name: 'Red Stone Necklace', meaning: 'Passion & Life Force', color: '#c0392b', image: '/product-images/red-main.webp' },
-  { id: 'blue', name: 'Blue Stone Necklace', meaning: 'Clarity & Inner Peace', color: '#2c6e91', image: '/product-images/blue-main.webp' },
-  { id: 'green', name: 'Green Stone Necklace', meaning: 'Healing & Renewal', color: '#4a7c59', image: '/product-images/green-main.webp' },
-  { id: 'white', name: 'White Stone Necklace', meaning: 'Protection & Purity', color: '#d4ccc0', image: '/product-images/white-main.webp' },
-  { id: 'black', name: 'Black Stone Necklace', meaning: 'Mystery & Inner Strength', color: '#3d3a35', image: '/product-images/black-main.webp' },
+  {
+    id: 'red',
+    name: 'Red Stone Necklace',
+    meaning: 'Passion & Life Force',
+    color: '#c0392b',
+    image: '/product-images/red-main.webp',
+    alt: 'Red Fifth Stone myth-inspired crystal necklace for courage and life force',
+  },
+  {
+    id: 'blue',
+    name: 'Blue Stone Necklace',
+    meaning: 'Clarity & Inner Peace',
+    color: '#2c6e91',
+    image: '/product-images/blue-main.webp',
+    alt: 'Blue Fifth Stone symbolic necklace for clarity and calm protection',
+  },
+  {
+    id: 'green',
+    name: 'Green Stone Necklace',
+    meaning: 'Healing & Renewal',
+    color: '#4a7c59',
+    image: '/product-images/green-main.webp',
+    alt: 'Green Fifth Stone Eastern mythology jewelry necklace for renewal',
+  },
+  {
+    id: 'white',
+    name: 'White Stone Necklace',
+    meaning: 'Protection & Purity',
+    color: '#d4ccc0',
+    image: '/product-images/white-main.webp',
+    alt: 'White Fifth Stone protection necklace with luminous symbolic stone',
+  },
+  {
+    id: 'black',
+    name: 'Black Stone Necklace',
+    meaning: 'Mystery & Inner Strength',
+    color: '#3d3a35',
+    image: '/product-images/black-main.webp',
+    alt: 'Black Fifth Stone symbolic jewelry necklace for inner strength',
+  },
 ];
 
 const concepts = [
@@ -33,9 +69,22 @@ const testimonials = [
   },
 ];
 
+const trustHighlights = [
+  'Secure Payment',
+  'Tracked Shipping',
+  'Clear Returns',
+  'Myth-Inspired Design',
+];
+
 let _observer: IntersectionObserver | null = null;
 
 const HomePage: PageComponent = {
+  seo: {
+    title: 'The Fifth Stone | Myth-Inspired Stone Necklaces',
+    description:
+      'Shop The Fifth Stone, a myth-inspired symbolic necklace collection made around repair, protection, and rebirth.',
+  },
+
   render() {
     const page = document.createElement('div');
     page.className = 'home-page';
@@ -82,6 +131,16 @@ const HomePage: PageComponent = {
         </div>
       </section>
 
+      <!-- ===== Brand Introduction ===== -->
+      <section class="home-brand-intro section section-center fade-section" aria-labelledby="brand-intro-title">
+        <div class="deco-divider"></div>
+        <h2 id="brand-intro-title" class="section-title">A necklace for the sky within.</h2>
+        <div class="home-brand-intro-copy">
+          <p>The Fifth Stone began with a simple image: a final sacred stone left behind after the sky was mended. From that image we create symbolic jewelry for people who want beauty with meaning, not noise. Each myth-inspired necklace is shaped around the language of repair, protection, and rebirth, drawing from Eastern mythology jewelry traditions while staying quiet enough for daily wear.</p>
+          <p>Our crystal necklace collection is made to feel like a private ritual. Red carries courage, green suggests renewal, blue invites calm, white becomes a protection necklace, and black holds mystery and inner strength. The piece is not a promise of magic; it is a wearable reminder. For a gift, a turning point, or an ordinary morning, The Fifth Stone offers a small story about what can be restored, guarded, and begun again. Every detail is meant to make the necklace feel personal before it ever becomes visible to anyone else.</p>
+        </div>
+      </section>
+
       <!-- ===== Screen 3: Product Concept ===== -->
       <section class="home-concepts section section-center fade-section">
         <div class="deco-divider"></div>
@@ -108,7 +167,7 @@ const HomePage: PageComponent = {
           ${products.map(p => `
             <div class="product-card">
               <div class="product-card-image">
-                <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async">
+                <img src="${p.image}" alt="${p.alt}" width="1086" height="1448" loading="lazy" decoding="async">
               </div>
               <h3 class="product-card-name">${p.name}</h3>
               <p class="product-card-meaning">${p.meaning}</p>
@@ -117,6 +176,18 @@ const HomePage: PageComponent = {
           `).join('')}
         </div>
         <button class="btn collection-cta" data-action="product">Choose Your Stone</button>
+      </section>
+
+      <!-- ===== Trust Section ===== -->
+      <section class="home-trust-section section section-center fade-section" aria-label="Trust and service highlights">
+        <div class="home-trust-grid">
+          ${trustHighlights.map((item, index) => `
+            <div class="home-trust-item">
+              <span class="home-trust-number">0${index + 1}</span>
+              <h3>${item}</h3>
+            </div>
+          `).join('')}
+        </div>
       </section>
 
       <!-- ===== Screen 5: Testimonials ===== -->
@@ -172,6 +243,11 @@ const HomePage: PageComponent = {
     page.querySelectorAll('[data-scroll]').forEach(btn => {
       btn.addEventListener('click', () => {
         const target = (btn as HTMLElement).dataset.scroll;
+        if (target === 'collection') {
+          trackEvent(analyticsEvents.collectionClick, { source: 'hero_shop' });
+        } else if (target === 'story') {
+          trackEvent(analyticsEvents.storyCtaClick, { source: 'hero_discover_origin' });
+        }
         if (target) {
           const el = document.getElementById(target);
           if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -179,15 +255,25 @@ const HomePage: PageComponent = {
       });
     });
     page.querySelectorAll('[data-action="story"]').forEach(btn => {
-      btn.addEventListener('click', () => navigateTo('story'));
+      btn.addEventListener('click', () => {
+        trackEvent(analyticsEvents.storyCtaClick, { source: 'home_story_teaser' });
+        navigateTo('story');
+      });
     });
     page.querySelectorAll('[data-action="product"]').forEach(btn => {
-      btn.addEventListener('click', () => navigateTo('product'));
+      btn.addEventListener('click', () => {
+        trackEvent(analyticsEvents.collectionClick, { source: 'home_collection_cta' });
+        navigateTo('collection');
+      });
     });
     page.querySelectorAll('[data-product]').forEach(btn => {
       btn.addEventListener('click', () => {
         const color = (btn as HTMLElement).dataset.product;
-        navigateTo('product', color ? { color } : undefined);
+        trackEvent(analyticsEvents.productCardClick, {
+          source: 'home_collection_preview',
+          product_id: color,
+        });
+        navigateTo('collection', color ? { color } : undefined);
       });
     });
 
@@ -196,6 +282,7 @@ const HomePage: PageComponent = {
       e.preventDefault();
       const input = form.querySelector('.signup-input') as HTMLInputElement;
       if (input.value && input.value.includes('@')) {
+        trackEvent(analyticsEvents.newsletterSubmit, { source: 'home_signup' });
         // TODO: Integrate with backend email subscription service
         const btn = form.querySelector('.signup-btn') as HTMLButtonElement;
         btn.textContent = 'Thank you!';

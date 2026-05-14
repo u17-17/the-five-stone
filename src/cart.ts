@@ -7,11 +7,34 @@ export interface CartItem {
 }
 
 const STORAGE_KEY = 'fifth-stone-cart';
+const DEFAULT_PRICE = 49;
+
+function normalizeCartItem(item: Partial<CartItem>): CartItem | null {
+  if (!item.colorId || !item.colorName || !item.image) return null;
+
+  return {
+    colorId: item.colorId,
+    colorName: item.colorName,
+    image: item.image,
+    price: typeof item.price === 'number' && Number.isFinite(item.price) ? item.price : DEFAULT_PRICE,
+    quantity:
+      typeof item.quantity === 'number' && Number.isFinite(item.quantity) && item.quantity > 0
+        ? item.quantity
+        : 1,
+  };
+}
 
 function readCart(): CartItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    if (!raw) return [];
+
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+
+    return parsed
+      .map((item: Partial<CartItem>) => normalizeCartItem(item))
+      .filter((item): item is CartItem => Boolean(item));
   } catch {
     return [];
   }

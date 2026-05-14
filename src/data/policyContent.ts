@@ -272,7 +272,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
     title: 'Privacy Policy',
     intro:
       'Your privacy matters to us. This Privacy Policy explains how The Fifth Stone collects, uses, and protects your information when you visit our website or place an order.',
-    lastUpdated: 'Last updated: [Month Day, Year]',
+    lastUpdated: 'Last updated: May 15, 2026',
     sections: [
       {
         heading: 'Information We Collect',
@@ -403,7 +403,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
     title: 'Terms of Service',
     intro:
       'Welcome to The Fifth Stone. By accessing our website or purchasing from us, you agree to the following Terms of Service. Please read them carefully.',
-    lastUpdated: 'Last updated: [Month Day, Year]',
+    lastUpdated: 'Last updated: May 15, 2026',
     sections: [
       {
         heading: 'Overview',

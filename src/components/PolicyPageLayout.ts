@@ -1,6 +1,7 @@
 import { navigateTo } from '../router';
 import type { PolicyBlock, PolicyPageContent, PolicySection } from '../data/policyContent';
 import { SUPPORT_EMAIL } from '../data/policyContent';
+import { analyticsEvents, trackEvent } from '../lib/analytics';
 
 function escapeHtml(value: string): string {
   return value
@@ -86,7 +87,7 @@ export function renderPolicyPageLayout(content: PolicyPageContent): HTMLElement 
       </div>
 
       <div class="policy-back">
-        <a class="btn btn-outline" href="/#home" data-policy-back>Back to The Fifth Stone</a>
+        <a class="btn btn-outline" href="/" data-policy-back>Back to The Fifth Stone</a>
       </div>
     </div>
   `;
@@ -100,12 +101,20 @@ export function renderPolicyPageLayout(content: PolicyPageContent): HTMLElement 
       return;
     }
 
+    trackEvent(analyticsEvents.contactClick, { source: 'contact_form' });
+
     const status = contactForm.querySelector<HTMLElement>('.policy-form-status');
     if (status) {
       status.hidden = false;
       status.textContent = `Thank you for your message. Please email us directly at ${SUPPORT_EMAIL} while our contact system is being finalized.`;
     }
     contactForm.reset();
+  });
+
+  page.querySelectorAll<HTMLAnchorElement>('.policy-email-link').forEach(link => {
+    link.addEventListener('click', () => {
+      trackEvent(analyticsEvents.contactClick, { source: 'policy_email_link' });
+    });
   });
 
   page.querySelector<HTMLAnchorElement>('[data-policy-back]')?.addEventListener('click', (event) => {

@@ -1,12 +1,13 @@
 import { navigateTo } from '../router';
 import { getCart } from '../cart';
+import { analyticsEvents, trackEvent } from '../lib/analytics';
 
 export function renderHeader(): HTMLElement {
   const header = document.createElement('header');
   header.className = 'site-header';
   header.innerHTML = `
     <div class="header-inner">
-      <a href="#home" class="logo" data-nav="home">
+      <a href="/" class="logo" data-nav="home">
         <span class="logo-mark" aria-hidden="true">
           <img src="/brand-logo-mark.webp" alt="" width="555" height="540" decoding="async">
         </span>
@@ -16,10 +17,10 @@ export function renderHeader(): HTMLElement {
         <span></span><span></span><span></span>
       </button>
       <nav class="main-nav" aria-label="Primary navigation">
-        <a href="#collection" data-home-section="collection">COLLECTION</a>
-        <a href="#story" data-home-section="story">ABOUT</a>
-        <a href="#story" data-nav="story">THE LEGEND</a>
-        <a href="#contact" data-home-section="contact">CONTACT</a>
+        <a href="/collection" data-nav="collection">COLLECTION</a>
+        <a href="/#story" data-home-section="story">ABOUT</a>
+        <a href="/story" data-nav="story">THE LEGEND</a>
+        <a href="/contact" data-nav="contact">CONTACT</a>
       </nav>
       <button class="header-cart-btn" id="cart-toggle-btn" aria-label="Open cart">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -69,6 +70,10 @@ export function renderHeader(): HTMLElement {
       const section = (link as HTMLElement).dataset.homeSection;
       if (!section) return;
 
+      if (section === 'story') {
+        trackEvent(analyticsEvents.storyCtaClick, { source: 'header_about' });
+      }
+
       if (location.hash.startsWith('#home')) {
         document
           .getElementById(section)
@@ -85,7 +90,14 @@ export function renderHeader(): HTMLElement {
       e.preventDefault();
       nav.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
-      const page = (link as HTMLElement).dataset.nav as 'home' | 'story' | 'product';
+      const page = (link as HTMLElement).dataset.nav as 'home' | 'story' | 'collection' | 'contact';
+      if (page === 'collection') {
+        trackEvent(analyticsEvents.collectionClick, { source: 'header' });
+      } else if (page === 'story') {
+        trackEvent(analyticsEvents.storyCtaClick, { source: 'header' });
+      } else if (page === 'contact') {
+        trackEvent(analyticsEvents.contactClick, { source: 'header' });
+      }
       navigateTo(page);
     });
   });

@@ -1,5 +1,4 @@
-import { navigateTo } from '../router';
-import type { PageName } from '../types';
+import { analyticsEvents, trackEvent } from '../lib/analytics';
 
 export function renderFooter(): HTMLElement {
   const footer = document.createElement('footer');
@@ -17,18 +16,21 @@ export function renderFooter(): HTMLElement {
         </div>
         <div class="footer-links">
           <p class="footer-link-heading">Explore</p>
-          <a href="/#home" data-footer-route="home">Home</a>
-          <a href="/#story" data-footer-route="story">The Legend</a>
-          <a href="/#product" data-footer-route="product">Collection</a>
+          <a href="/">Home</a>
+          <a href="/collection" data-footer-track="collection">Collection</a>
+          <a href="/story" data-footer-track="story">Our Story</a>
         </div>
-        <div class="footer-links footer-policy-links" aria-label="Policy links">
-          <p class="footer-link-heading">Policy Links</p>
-          <a href="/shipping-policy" data-footer-route="shipping-policy">Shipping Policy</a>
-          <a href="/return-refund-policy" data-footer-route="return-refund-policy">Return &amp; Refund Policy</a>
-          <a href="/privacy-policy" data-footer-route="privacy-policy">Privacy Policy</a>
-          <a href="/terms-of-service" data-footer-route="terms-of-service">Terms of Service</a>
-          <a href="/contact" data-footer-route="contact">Contact</a>
-          <a href="/faq" data-footer-route="faq">FAQ</a>
+        <div class="footer-links footer-policy-links" aria-label="Customer care links">
+          <p class="footer-link-heading">Customer Care</p>
+          <a href="/policies/shipping-policy">Shipping Policy</a>
+          <a href="/policies/refund-policy">Return &amp; Refund Policy</a>
+          <a href="/contact" data-footer-track="contact">Contact Us</a>
+          <a href="/faq">FAQ</a>
+        </div>
+        <div class="footer-links footer-policy-links" aria-label="Legal links">
+          <p class="footer-link-heading">Legal</p>
+          <a href="/policies/privacy-policy">Privacy Policy</a>
+          <a href="/policies/terms-of-service">Terms of Service</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -37,11 +39,16 @@ export function renderFooter(): HTMLElement {
     </div>
   `;
 
-  footer.querySelectorAll<HTMLAnchorElement>('[data-footer-route]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const route = link.dataset.footerRoute as PageName | undefined;
-      if (route) navigateTo(route);
+  footer.querySelectorAll<HTMLElement>('[data-footer-track]').forEach(link => {
+    link.addEventListener('click', () => {
+      const target = link.dataset.footerTrack;
+      if (target === 'collection') {
+        trackEvent(analyticsEvents.collectionClick, { source: 'footer' });
+      } else if (target === 'story') {
+        trackEvent(analyticsEvents.storyCtaClick, { source: 'footer' });
+      } else if (target === 'contact') {
+        trackEvent(analyticsEvents.contactClick, { source: 'footer' });
+      }
     });
   });
 

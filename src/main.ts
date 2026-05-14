@@ -1,6 +1,7 @@
 import './style.css';
 import { initRouter } from './router';
 import { getCart, removeFromCart, updateQuantity } from './cart';
+import { initAnalytics } from './lib/analytics';
 
 function initApp() {
   const app = document.getElementById('app')!;
@@ -51,7 +52,7 @@ function initApp() {
     const el = document.createElement('div');
     el.className = 'cart-item';
     el.innerHTML = `
-      <img src="${item.image}" alt="${item.colorName} Stone" class="cart-item-image" loading="lazy">
+      <img src="${item.image}" alt="${item.colorName} Stone" class="cart-item-image" width="1086" height="1448" loading="lazy">
       <div class="cart-item-info">
         <h4>${item.colorName} Stone</h4>
         <p>$${item.price.toFixed(2)}</p>
@@ -126,6 +127,7 @@ function initApp() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initAnalytics();
   initApp();
   initRouter();
 });

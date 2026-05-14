@@ -12,6 +12,7 @@ export interface PageSeo {
 export type PageName =
   | 'home'
   | 'story'
+  | 'collection'
   | 'product'
   | 'shipping-policy'
   | 'return-refund-policy'

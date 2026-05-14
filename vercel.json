@@ -1,4 +1,31 @@
 {
+  "redirects": [
+    {
+      "source": "/product",
+      "destination": "/collection",
+      "permanent": true
+    },
+    {
+      "source": "/shipping-policy",
+      "destination": "/policies/shipping-policy",
+      "permanent": true
+    },
+    {
+      "source": "/return-refund-policy",
+      "destination": "/policies/refund-policy",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/policies/privacy-policy",
+      "permanent": true
+    },
+    {
+      "source": "/terms-of-service",
+      "destination": "/policies/terms-of-service",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

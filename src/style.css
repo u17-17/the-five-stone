@@ -203,7 +203,7 @@ h1, h2, h3, h4 {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr minmax(180px, 1.4fr);
+  grid-template-columns: minmax(220px, 1.7fr) minmax(120px, 0.8fr) minmax(190px, 1fr) minmax(170px, 0.9fr);
   gap: 28px;
   margin-bottom: 28px;
 }
@@ -831,12 +831,51 @@ h1, h2, h3, h4 {
 .product-btn-group {
   display: flex;
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 18px;
 }
 
 .product-add-cart,
 .product-buy-now {
   flex: 1;
+}
+
+.product-trust-badges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 28px;
+}
+
+.product-trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 9px 10px;
+  border: 1px solid rgba(184,160,124,0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(250,246,240,0.56);
+  color: var(--color-text-light);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+
+.product-trust-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  border-radius: 50%;
+  background: var(--color-muted-gold);
+  opacity: 0.72;
+}
+
+.product-trust-badge:hover {
+  transform: translateY(-1px);
+  border-color: rgba(184,160,124,0.42);
+  background: rgba(250,246,240,0.82);
+  color: #6f5a3d;
 }
 
 .product-selling-points {
@@ -945,7 +984,53 @@ h1, h2, h3, h4 {
   font-style: italic;
 }
 
-/* --- 4. Materials & Details --- */
+/* --- 4. Stone Descriptions --- */
+.product-stone-descriptions {
+  max-width: 100%;
+  padding: 94px 24px;
+  background:
+    radial-gradient(ellipse 68% 38% at 50% 0%, rgba(255,255,255,0.52), transparent 66%),
+    var(--color-cream);
+}
+
+.stone-description-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.stone-description-card {
+  min-width: 0;
+  padding: 24px 20px;
+  border: 1px solid var(--card-border-soft);
+  border-radius: var(--radius-md);
+  background: rgba(250,246,240,0.64);
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.stone-description-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--card-border-hover);
+  background: rgba(250,246,240,0.82);
+  box-shadow: 0 16px 34px rgba(126,105,76,0.08);
+}
+
+.stone-description-card h3 {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-dark);
+}
+
+.stone-description-card p {
+  font-size: 0.78rem;
+  line-height: 1.72;
+  color: var(--color-text-light);
+}
+
+/* --- 5. Materials & Details --- */
 .product-materials {
   background: var(--color-cream);
   max-width: 100%;
@@ -993,7 +1078,7 @@ h1, h2, h3, h4 {
   line-height: 1.7;
 }
 
-/* --- 5. Made to Wear Daily --- */
+/* --- 6. Made to Wear Daily --- */
 .product-wear {
   background: var(--color-ivory);
 }
@@ -1220,6 +1305,10 @@ h1, h2, h3, h4 {
 
 /* ===== Product Page Responsive ===== */
 @media (max-width: 1024px) {
+  .stone-description-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .materials-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1255,6 +1344,10 @@ h1, h2, h3, h4 {
     flex-direction: column;
   }
 
+  .product-trust-badges {
+    grid-template-columns: 1fr;
+  }
+
   .product-wear-inner {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -1278,6 +1371,10 @@ h1, h2, h3, h4 {
   }
 
   .materials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stone-description-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1856,6 +1953,36 @@ body::after {
   margin-top: 8px;
 }
 
+.home-brand-intro {
+  background: var(--color-ivory);
+}
+
+.home-brand-intro-copy,
+.story-brand-copy-text {
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.home-brand-intro-copy p,
+.story-brand-copy-text p {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.3vw, 1.14rem);
+  line-height: 1.84;
+  color: var(--color-text);
+}
+
+.home-brand-intro-copy p + p,
+.story-brand-copy-text p + p {
+  margin-top: 18px;
+}
+
+.story-brand-copy {
+  background:
+    linear-gradient(180deg, rgba(250,246,240,0.3), rgba(245,239,230,0.54));
+  max-width: 100%;
+}
+
 /* --- Concepts --- */
 .home-concepts {
   background: var(--color-ivory);
@@ -2061,6 +2188,54 @@ body::after {
   display: inline-flex;
 }
 
+/* --- Trust Highlights --- */
+.home-trust-section {
+  max-width: 100%;
+  padding: clamp(42px, 5vw, 66px) var(--section-padding-x);
+  background:
+    linear-gradient(180deg, rgba(250,246,240,0.88), rgba(245,239,230,0.7));
+  border-top: 1px solid rgba(184,160,124,0.18);
+  border-bottom: 1px solid rgba(184,160,124,0.18);
+}
+
+.home-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  border: 1px solid rgba(184,160,124,0.18);
+  border-left: 0;
+  border-right: 0;
+}
+
+.home-trust-item {
+  min-width: 0;
+  padding: 26px 22px;
+  border-right: 1px solid rgba(184,160,124,0.18);
+}
+
+.home-trust-item:last-child {
+  border-right: 0;
+}
+
+.home-trust-number {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  color: var(--color-muted-gold);
+}
+
+.home-trust-item h3 {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-dark);
+}
+
 /* --- Testimonials --- */
 .home-testimonials {
   background:
@@ -2264,6 +2439,18 @@ body::after {
     gap: 16px;
   }
 
+  .home-trust-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-trust-item:nth-child(2) {
+    border-right: 0;
+  }
+
+  .home-trust-item:nth-child(-n + 2) {
+    border-bottom: 1px solid rgba(184,160,124,0.18);
+  }
+
   .testimonials-grid {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -2350,6 +2537,23 @@ body::after {
 @media (max-width: 480px) {
   .collection-grid {
     grid-template-columns: 1fr;
+  }
+
+  .home-trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-trust-item,
+  .home-trust-item:nth-child(2) {
+    border-right: 0;
+  }
+
+  .home-trust-item {
+    border-bottom: 1px solid rgba(184,160,124,0.18);
+  }
+
+  .home-trust-item:last-child {
+    border-bottom: 0;
   }
 
   .home-hero {

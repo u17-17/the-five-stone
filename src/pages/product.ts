@@ -1,6 +1,7 @@
 import type { PageComponent } from '../types';
 import { getPageParams } from '../router';
 import { addToCart } from '../cart';
+import { analyticsEvents, trackEvent } from '../lib/analytics';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -19,6 +20,7 @@ interface StoneColor {
   hex: string;
   subtitle: string;
   description: string;
+  longDescription: string;
   gradient: string;
   image: string;
   images: Record<GalleryImageKey, string>;
@@ -36,12 +38,40 @@ interface FAQData {
   a: string;
 }
 
+interface ImageDimensions {
+  width: number;
+  height: number;
+}
+
 // ---------------------------------------------------------------------------
 // Data
 // ---------------------------------------------------------------------------
 const PRODUCT_ASSET_DIR = '/product-images';
 
 const productAsset = (fileName: string): string => `${PRODUCT_ASSET_DIR}/${fileName}`;
+
+const PRODUCT_IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
+  'red-main.webp': { width: 1086, height: 1448 },
+  'red-worn.webp': { width: 1122, height: 1402 },
+  'red-detail.webp': { width: 1122, height: 1402 },
+  'red-packaging.webp': { width: 1448, height: 1086 },
+  'green-main.webp': { width: 1086, height: 1448 },
+  'green-worn.webp': { width: 1122, height: 1402 },
+  'green-detail.webp': { width: 1122, height: 1402 },
+  'green-packaging.webp': { width: 1448, height: 1086 },
+  'blue-main.webp': { width: 1086, height: 1448 },
+  'blue-worn.webp': { width: 1122, height: 1402 },
+  'blue-detail.webp': { width: 1122, height: 1402 },
+  'blue-packaging.webp': { width: 1448, height: 1086 },
+  'white-main.webp': { width: 1086, height: 1448 },
+  'white-worn.webp': { width: 1122, height: 1402 },
+  'white-detail.webp': { width: 1122, height: 1402 },
+  'white-packaging.webp': { width: 1448, height: 1086 },
+  'black-main.webp': { width: 1086, height: 1448 },
+  'black-worn.webp': { width: 1122, height: 1402 },
+  'black-detail.webp': { width: 1122, height: 1402 },
+  'black-packaging.webp': { width: 1448, height: 1086 },
+};
 
 const IMAGE_VIEWS: GalleryView[] = [
   { key: 'main', label: 'Main' },
@@ -59,6 +89,8 @@ const STONE_COLORS: StoneColor[] = [
     subtitle: 'Passion / Courage / Life Force',
     description:
       'Red jasper — the stone of vitality. A reminder that you are alive, capable, and made for more than mere existence.',
+    longDescription:
+      'The Red Stone Necklace is a myth-inspired necklace for courage, momentum, and the return of life force. Its warm red tone gives this crystal necklace a grounded presence, making it feel powerful without becoming loud. Inspired by Eastern mythology jewelry and the image of fire sealed inside stone, Red is chosen by people entering a new chapter, protecting their energy, or remembering their own capacity to begin again. It is symbolic jewelry for days that ask for resolve and forward motion.',
     gradient: 'linear-gradient(135deg, #c0392b, #e74c3c, #c0392b)',
     image: productAsset('red-main.webp'),
     images: {
@@ -75,6 +107,8 @@ const STONE_COLORS: StoneColor[] = [
     subtitle: 'Healing / Renewal / Growth',
     description:
       'Green aventurine — the stone of renewal. A reminder that healing is not linear, and every ending holds a new beginning.',
+    longDescription:
+      'The Green Stone Necklace is designed around renewal, patience, and the slow intelligence of healing. As a symbolic crystal necklace, it carries a softer kind of strength: the kind that returns quietly after a difficult season. Green connects the collection to growth in nature and to Eastern mythology jewelry traditions where color often holds emotional meaning. Wear it as a myth-inspired necklace for restoration, gentleness, and the belief that what has been cracked can still become fertile again with trust.',
     gradient: 'linear-gradient(135deg, #27ae60, #2ecc71, #27ae60)',
     image: productAsset('green-main.webp'),
     images: {
@@ -91,6 +125,8 @@ const STONE_COLORS: StoneColor[] = [
     subtitle: 'Clarity / Peace / Inner Balance',
     description:
       'Blue lace agate — the stone of serenity. A reminder to breathe, to still the mind, and to trust the quiet voice within.',
+    longDescription:
+      'The Blue Stone Necklace is made for clarity, inner quiet, and the space between reaction and response. Its cool tone gives this crystal necklace a calm visual rhythm, while the story behind it keeps the piece emotionally anchored. Blue is for the wearer who wants symbolic jewelry that feels thoughtful, steady, and easy to return to during a crowded day. As a myth-inspired necklace shaped by Eastern mythology jewelry, it suggests still water, open sky, and the protection of a clear mind.',
     gradient: 'linear-gradient(135deg, #2980b9, #3498db, #2980b9)',
     image: productAsset('blue-main.webp'),
     images: {
@@ -107,6 +143,8 @@ const STONE_COLORS: StoneColor[] = [
     subtitle: 'Protection / Purity / Light',
     description:
       'White moonstone — the stone of protection. A reminder that you are held, guided, and never truly alone.',
+    longDescription:
+      'The White Stone Necklace is the collection’s clearest protection necklace, made for those who want a piece that feels luminous, gentle, and close. Its pale stone gives the crystal necklace a quiet ritual quality, like light held in a small object. Inspired by Eastern mythology jewelry and the final stone left behind after the sky was repaired, White represents shelter, purity, and emotional steadiness. It is symbolic jewelry for travel, transition, gifting, and moments when softness itself becomes a form of strength.',
     gradient: 'linear-gradient(135deg, #e8e0d8, #f5f0eb, #d4ccc4)',
     image: productAsset('white-main.webp'),
     images: {
@@ -123,6 +161,8 @@ const STONE_COLORS: StoneColor[] = [
     subtitle: 'Mystery / Intuition / Spiritual Strength',
     description:
       'Black obsidian — the stone of truth. A reminder to look within, to shed what no longer serves, and to stand in your power.',
+    longDescription:
+      'The Black Stone Necklace is a myth-inspired necklace for intuition, boundaries, and quiet inner strength. Its deep tone brings a more mysterious energy to the crystal necklace collection, pairing easily with daily clothing while carrying a private symbolic weight. Black is chosen by wearers who want protection without ornament that feels obvious, and meaning without explanation. Rooted in Eastern mythology jewelry and the image of a stone that remained after repair, it becomes symbolic jewelry for truth, resilience, and self-possession.',
     gradient: 'linear-gradient(135deg, #2c2c2c, #4a4a4a, #2c2c2c)',
     image: productAsset('black-main.webp'),
     images: {
@@ -198,6 +238,13 @@ const SELLING_POINTS = [
   'Free shipping worldwide',
 ];
 
+const TRUST_BADGES = [
+  { label: 'Secure checkout with PayPal', href: '/policies/privacy-policy' },
+  { label: 'Tracked international shipping', href: '/policies/shipping-policy' },
+  { label: 'Clear return policy', href: '/policies/refund-policy' },
+  { label: 'Support contact available', href: '/contact' },
+];
+
 // ---------------------------------------------------------------------------
 // Gallery helpers
 // ---------------------------------------------------------------------------
@@ -213,6 +260,12 @@ function createGalleryImage(
   img.alt = alt;
   img.loading = options.loading ?? 'lazy';
   img.decoding = 'async';
+  const fileName = src.split('/').pop();
+  const dimensions = fileName ? PRODUCT_IMAGE_DIMENSIONS[fileName] : undefined;
+  if (dimensions) {
+    img.width = dimensions.width;
+    img.height = dimensions.height;
+  }
   if (options.fetchPriority) {
     img.setAttribute('fetchpriority', options.fetchPriority);
   }
@@ -229,7 +282,7 @@ function createAllColorsGallery(className: string): HTMLDivElement {
     item.appendChild(
       createGalleryImage(
         color.images.main,
-        `${color.name} Stone Necklace`,
+        `${color.name} Fifth Stone symbolic crystal necklace in the five-stone collection`,
         'product-all-colors-img',
       ),
     );
@@ -249,11 +302,11 @@ function renderGalleryView(container: HTMLElement, color: StoneColor, viewIndex:
   }
 
   container.appendChild(
-    createGalleryImage(
-      color.images[view.key],
-      `${view.label} view of the ${color.name} Stone Necklace`,
-      'product-main-image-el',
-      { loading: 'eager', fetchPriority: 'high' },
+      createGalleryImage(
+        color.images[view.key],
+        `${color.name} Fifth Stone Necklace ${view.label.toLowerCase()} image for myth-inspired symbolic jewelry`,
+        'product-main-image-el',
+        { loading: 'eager', fetchPriority: 'high' },
     ),
   );
 }
@@ -274,7 +327,7 @@ function renderGalleryThumb(thumb: HTMLElement, color: StoneColor, viewIndex: nu
     thumb.appendChild(
       createGalleryImage(
         color.images[view.key],
-        `${view.label} thumbnail for ${color.name} Stone Necklace`,
+        `${color.name} Fifth Stone ${view.label.toLowerCase()} thumbnail for the product gallery`,
         'product-image-thumb-img',
       ),
     );
@@ -290,6 +343,12 @@ function renderGalleryThumb(thumb: HTMLElement, color: StoneColor, viewIndex: nu
 // Page Component
 // ---------------------------------------------------------------------------
 const ProductPage: PageComponent = {
+  seo: {
+    title: 'The Fifth Stone Collection | Symbolic Stone Necklaces',
+    description:
+      'Choose your Fifth Stone necklace in red, green, blue, white, or black, each carrying a symbolic meaning inspired by the myth of mending the sky.',
+  },
+
   render() {
     const page = document.createElement('div');
     page.className = 'product-page';
@@ -394,6 +453,24 @@ const ProductPage: PageComponent = {
     btnGroup.appendChild(addToCartBtn);
     btnGroup.appendChild(buyNowBtn);
 
+    /* Trust badges */
+    const trustBadges = document.createElement('div');
+    trustBadges.className = 'product-trust-badges';
+    trustBadges.setAttribute('aria-label', 'Checkout and customer support information');
+
+    for (const badge of TRUST_BADGES) {
+      const link = document.createElement('a');
+      link.className = 'product-trust-badge';
+      link.href = badge.href;
+      link.textContent = badge.label;
+      if (badge.href === '/contact') {
+        link.addEventListener('click', () => {
+          trackEvent(analyticsEvents.contactClick, { source: 'product_trust_badge' });
+        });
+      }
+      trustBadges.appendChild(link);
+    }
+
     /* Selling points */
     const sellingList = document.createElement('ul');
     sellingList.className = 'product-selling-points';
@@ -412,6 +489,7 @@ const ProductPage: PageComponent = {
     heroInfo.appendChild(colorNameEl);
     heroInfo.appendChild(colorSubtitleEl);
     heroInfo.appendChild(btnGroup);
+    heroInfo.appendChild(trustBadges);
     heroInfo.appendChild(sellingList);
 
     heroInner.appendChild(heroImages);
@@ -490,7 +568,49 @@ const ProductPage: PageComponent = {
     page.appendChild(chooseSection);
 
     /* ====================================================================
-     *  4. Materials & Details
+     *  4. Stone Descriptions
+     * ==================================================================== */
+    const stoneDescriptionsSection = document.createElement('section');
+    stoneDescriptionsSection.className = 'section product-stone-descriptions';
+
+    const stoneDescriptionsHeader = document.createElement('div');
+    stoneDescriptionsHeader.className = 'section-center';
+
+    const stoneDescriptionsTitle = document.createElement('h2');
+    stoneDescriptionsTitle.className = 'section-title';
+    stoneDescriptionsTitle.textContent = 'Five symbolic necklaces, five ways to carry the story.';
+
+    const stoneDescriptionsSubtitle = document.createElement('p');
+    stoneDescriptionsSubtitle.className = 'section-subtitle';
+    stoneDescriptionsSubtitle.textContent =
+      'Each crystal necklace is part of one myth-inspired collection, but every color holds its own emotional language.';
+
+    const stoneDescriptionsGrid = document.createElement('div');
+    stoneDescriptionsGrid.className = 'stone-description-grid';
+
+    for (const color of STONE_COLORS) {
+      const card = document.createElement('article');
+      card.className = 'stone-description-card';
+
+      const title = document.createElement('h3');
+      title.textContent = `${color.name} Stone Necklace`;
+
+      const text = document.createElement('p');
+      text.textContent = color.longDescription;
+
+      card.appendChild(title);
+      card.appendChild(text);
+      stoneDescriptionsGrid.appendChild(card);
+    }
+
+    stoneDescriptionsHeader.appendChild(stoneDescriptionsTitle);
+    stoneDescriptionsHeader.appendChild(stoneDescriptionsSubtitle);
+    stoneDescriptionsSection.appendChild(stoneDescriptionsHeader);
+    stoneDescriptionsSection.appendChild(stoneDescriptionsGrid);
+    page.appendChild(stoneDescriptionsSection);
+
+    /* ====================================================================
+     *  5. Materials & Details
      * ==================================================================== */
     const materialSection = document.createElement('section');
     materialSection.className = 'section product-materials';
@@ -555,7 +675,7 @@ const ProductPage: PageComponent = {
     page.appendChild(materialSection);
 
     /* ====================================================================
-     *  5. Made to Wear Daily
+     *  6. Made to Wear Daily
      * ==================================================================== */
     const wearSection = document.createElement('section');
     wearSection.className = 'section product-wear';
@@ -583,7 +703,7 @@ const ProductPage: PageComponent = {
     wearImage.appendChild(
       createGalleryImage(
         currentColor().images.worn,
-        `${currentColor().name} Stone Necklace worn daily`,
+        `${currentColor().name} Fifth Stone necklace worn as symbolic Eastern mythology jewelry`,
         'product-wear-image-el',
       ),
     );
@@ -594,7 +714,7 @@ const ProductPage: PageComponent = {
     page.appendChild(wearSection);
 
     /* ====================================================================
-     *  6. What's in the Box
+     *  7. What's in the Box
      * ==================================================================== */
     const boxSection = document.createElement('section');
     boxSection.className = 'section section-center product-box';
@@ -626,7 +746,7 @@ const ProductPage: PageComponent = {
     page.appendChild(boxSection);
 
     /* ====================================================================
-     *  7. Reviews
+     *  8. Reviews
      * ==================================================================== */
     const reviewsSection = document.createElement('section');
     reviewsSection.className = 'section section-center product-reviews';
@@ -665,7 +785,7 @@ const ProductPage: PageComponent = {
     page.appendChild(reviewsSection);
 
     /* ====================================================================
-     *  8. FAQ
+     *  9. FAQ
      * ==================================================================== */
     const faqSection = document.createElement('section');
     faqSection.className = 'section section-center product-faq';
@@ -714,7 +834,7 @@ const ProductPage: PageComponent = {
     page.appendChild(faqSection);
 
     /* ====================================================================
-     *  9. Final CTA
+     *  10. Final CTA
      * ==================================================================== */
     const ctaSection = document.createElement('section');
     ctaSection.className = 'section section-center product-cta';
@@ -798,6 +918,11 @@ const ProductPage: PageComponent = {
     /* ---- Buy Now ---- */
     buyNowBtn.addEventListener('click', () => {
       const color = currentColor();
+      trackEvent(analyticsEvents.buyNowClick, {
+        source: 'product_detail',
+        product_id: color.id,
+        product_name: `${color.name} Stone Necklace`,
+      });
       addToCart({
         colorId: color.id,
         colorName: color.name,
@@ -850,7 +975,7 @@ const ProductPage: PageComponent = {
       wearImage.appendChild(
         createGalleryImage(
           color.images.worn,
-          `${color.name} Stone Necklace worn daily`,
+          `${color.name} Fifth Stone necklace worn as symbolic Eastern mythology jewelry`,
           'product-wear-image-el',
         ),
       );
