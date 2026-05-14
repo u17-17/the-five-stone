@@ -10,7 +10,7 @@ export function renderFooter(): HTMLElement {
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-brand-mark" aria-hidden="true">
-            <img src="/brand-logo-mark.png" alt="">
+            <img src="/brand-logo-mark.webp" alt="" width="555" height="540" loading="lazy" decoding="async">
           </div>
           <h3>THE FIFTH STONE</h3>
           <p>Wear the Stone That Mends the Sky.</p>

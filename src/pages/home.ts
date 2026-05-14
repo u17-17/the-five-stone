@@ -2,11 +2,11 @@ import type { PageComponent } from '../types';
 import { getPageParams, navigateTo } from '../router';
 
 const products = [
-  { id: 'red', name: 'Red Stone Necklace', meaning: 'Passion & Life Force', color: '#c0392b', image: '/产品展示图/红 (1).png' },
-  { id: 'blue', name: 'Blue Stone Necklace', meaning: 'Clarity & Inner Peace', color: '#2c6e91', image: '/产品展示图/蓝.png' },
-  { id: 'green', name: 'Green Stone Necklace', meaning: 'Healing & Renewal', color: '#4a7c59', image: '/产品展示图/绿.png' },
-  { id: 'white', name: 'White Stone Necklace', meaning: 'Protection & Purity', color: '#d4ccc0', image: '/产品展示图/白.png' },
-  { id: 'black', name: 'Black Stone Necklace', meaning: 'Mystery & Inner Strength', color: '#3d3a35', image: '/产品展示图/黑.png' },
+  { id: 'red', name: 'Red Stone Necklace', meaning: 'Passion & Life Force', color: '#c0392b', image: '/product-images/red-main.webp' },
+  { id: 'blue', name: 'Blue Stone Necklace', meaning: 'Clarity & Inner Peace', color: '#2c6e91', image: '/product-images/blue-main.webp' },
+  { id: 'green', name: 'Green Stone Necklace', meaning: 'Healing & Renewal', color: '#4a7c59', image: '/product-images/green-main.webp' },
+  { id: 'white', name: 'White Stone Necklace', meaning: 'Protection & Purity', color: '#d4ccc0', image: '/product-images/white-main.webp' },
+  { id: 'black', name: 'Black Stone Necklace', meaning: 'Mystery & Inner Strength', color: '#3d3a35', image: '/product-images/black-main.webp' },
 ];
 
 const concepts = [
@@ -45,7 +45,7 @@ const HomePage: PageComponent = {
       <section id="hero" class="home-hero" aria-labelledby="hero-title">
         <div class="hero-content">
           <div class="hero-brand-mark" aria-hidden="true">
-            <img src="/brand-logo-mark.png" alt="">
+            <img src="/brand-logo-mark.webp" alt="" width="555" height="540" decoding="async">
           </div>
           <p class="hero-brand-slogan">THE FIFTH STONE</p>
           <h1 id="hero-title" class="hero-title">Wear the Stone<br>That Mends the Sky.</h1>
@@ -108,7 +108,7 @@ const HomePage: PageComponent = {
           ${products.map(p => `
             <div class="product-card">
               <div class="product-card-image">
-                <img src="${p.image}" alt="${p.name}">
+                <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async">
               </div>
               <h3 class="product-card-name">${p.name}</h3>
               <p class="product-card-meaning">${p.meaning}</p>

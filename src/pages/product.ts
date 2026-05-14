@@ -39,7 +39,7 @@ interface FAQData {
 // ---------------------------------------------------------------------------
 // Data
 // ---------------------------------------------------------------------------
-const PRODUCT_ASSET_DIR = '/产品展示图';
+const PRODUCT_ASSET_DIR = '/product-images';
 
 const productAsset = (fileName: string): string => `${PRODUCT_ASSET_DIR}/${fileName}`;
 
@@ -60,12 +60,12 @@ const STONE_COLORS: StoneColor[] = [
     description:
       'Red jasper — the stone of vitality. A reminder that you are alive, capable, and made for more than mere existence.',
     gradient: 'linear-gradient(135deg, #c0392b, #e74c3c, #c0392b)',
-    image: productAsset('红 (1).png'),
+    image: productAsset('red-main.webp'),
     images: {
-      main: productAsset('红 (1).png'),
-      worn: productAsset('red-worn-lifestyle.png'),
-      detail: productAsset('ChatGPT Image 2026年5月14日 15_19_16 (1).png'),
-      packaging: productAsset('ChatGPT Image 2026年5月14日 15_42_40.png'),
+      main: productAsset('red-main.webp'),
+      worn: productAsset('red-worn.webp'),
+      detail: productAsset('red-detail.webp'),
+      packaging: productAsset('red-packaging.webp'),
     },
   },
   {
@@ -76,12 +76,12 @@ const STONE_COLORS: StoneColor[] = [
     description:
       'Green aventurine — the stone of renewal. A reminder that healing is not linear, and every ending holds a new beginning.',
     gradient: 'linear-gradient(135deg, #27ae60, #2ecc71, #27ae60)',
-    image: productAsset('绿.png'),
+    image: productAsset('green-main.webp'),
     images: {
-      main: productAsset('绿.png'),
-      worn: productAsset('ChatGPT Image 2026年5月14日 15_49_48 (2).png'),
-      detail: productAsset('ChatGPT Image 2026年5月14日 15_43_58 (6).png'),
-      packaging: productAsset('ChatGPT Image 2026年5月14日 15_54_56 (3).png'),
+      main: productAsset('green-main.webp'),
+      worn: productAsset('green-worn.webp'),
+      detail: productAsset('green-detail.webp'),
+      packaging: productAsset('green-packaging.webp'),
     },
   },
   {
@@ -92,12 +92,12 @@ const STONE_COLORS: StoneColor[] = [
     description:
       'Blue lace agate — the stone of serenity. A reminder to breathe, to still the mind, and to trust the quiet voice within.',
     gradient: 'linear-gradient(135deg, #2980b9, #3498db, #2980b9)',
-    image: productAsset('蓝.png'),
+    image: productAsset('blue-main.webp'),
     images: {
-      main: productAsset('蓝.png'),
-      worn: productAsset('ChatGPT Image 2026年5月14日 15_49_48 (3).png'),
-      detail: productAsset('ChatGPT Image 2026年5月14日 15_43_59 (7).png'),
-      packaging: productAsset('ChatGPT Image 2026年5月14日 15_54_57 (4).png'),
+      main: productAsset('blue-main.webp'),
+      worn: productAsset('blue-worn.webp'),
+      detail: productAsset('blue-detail.webp'),
+      packaging: productAsset('blue-packaging.webp'),
     },
   },
   {
@@ -108,12 +108,12 @@ const STONE_COLORS: StoneColor[] = [
     description:
       'White moonstone — the stone of protection. A reminder that you are held, guided, and never truly alone.',
     gradient: 'linear-gradient(135deg, #e8e0d8, #f5f0eb, #d4ccc4)',
-    image: productAsset('白.png'),
+    image: productAsset('white-main.webp'),
     images: {
-      main: productAsset('白.png'),
-      worn: productAsset('ChatGPT Image 2026年5月14日 15_49_48 (4).png'),
-      detail: productAsset('ChatGPT Image 2026年5月14日 15_43_59 (8).png'),
-      packaging: productAsset('ChatGPT Image 2026年5月14日 15_54_55 (1).png'),
+      main: productAsset('white-main.webp'),
+      worn: productAsset('white-worn.webp'),
+      detail: productAsset('white-detail.webp'),
+      packaging: productAsset('white-packaging.webp'),
     },
   },
   {
@@ -124,12 +124,12 @@ const STONE_COLORS: StoneColor[] = [
     description:
       'Black obsidian — the stone of truth. A reminder to look within, to shed what no longer serves, and to stand in your power.',
     gradient: 'linear-gradient(135deg, #2c2c2c, #4a4a4a, #2c2c2c)',
-    image: productAsset('黑.png'),
+    image: productAsset('black-main.webp'),
     images: {
-      main: productAsset('黑.png'),
-      worn: productAsset('ChatGPT Image 2026年5月14日 15_49_47 (1).png'),
-      detail: productAsset('ChatGPT Image 2026年5月14日 15_43_58 (5).png'),
-      packaging: productAsset('ChatGPT Image 2026年5月14日 15_54_56 (2).png'),
+      main: productAsset('black-main.webp'),
+      worn: productAsset('black-worn.webp'),
+      detail: productAsset('black-detail.webp'),
+      packaging: productAsset('black-packaging.webp'),
     },
   },
 ];
@@ -201,12 +201,21 @@ const SELLING_POINTS = [
 // ---------------------------------------------------------------------------
 // Gallery helpers
 // ---------------------------------------------------------------------------
-function createGalleryImage(src: string, alt: string, className: string): HTMLImageElement {
+function createGalleryImage(
+  src: string,
+  alt: string,
+  className: string,
+  options: { loading?: 'eager' | 'lazy'; fetchPriority?: 'high' | 'low' | 'auto' } = {},
+): HTMLImageElement {
   const img = document.createElement('img');
   img.className = className;
   img.src = src;
   img.alt = alt;
-  img.loading = 'lazy';
+  img.loading = options.loading ?? 'lazy';
+  img.decoding = 'async';
+  if (options.fetchPriority) {
+    img.setAttribute('fetchpriority', options.fetchPriority);
+  }
   return img;
 }
 
@@ -244,6 +253,7 @@ function renderGalleryView(container: HTMLElement, color: StoneColor, viewIndex:
       color.images[view.key],
       `${view.label} view of the ${color.name} Stone Necklace`,
       'product-main-image-el',
+      { loading: 'eager', fetchPriority: 'high' },
     ),
   );
 }

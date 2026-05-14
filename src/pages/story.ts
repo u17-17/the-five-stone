@@ -2,7 +2,7 @@ import type { PageComponent } from '../types';
 
 let _observer: IntersectionObserver | null = null;
 
-const PRODUCT_ASSET_DIR = '/产品展示图';
+const PRODUCT_ASSET_DIR = '/product-images';
 const productAsset = (fileName: string): string => `${PRODUCT_ASSET_DIR}/${fileName}`;
 
 const StoryPage: PageComponent = {
@@ -25,7 +25,7 @@ const StoryPage: PageComponent = {
         background:
           linear-gradient(180deg, rgba(250,246,240,0.34) 0%, rgba(250,246,240,0.58) 48%, rgba(250,246,240,0.7) 100%),
           radial-gradient(ellipse 46% 32% at 50% 48%, rgba(250,246,240,0.76), rgba(250,246,240,0.3) 58%, transparent 78%),
-          url('/story-hero-bg.png');
+          url('/story-hero-bg.webp');
         background-color: var(--color-ivory);
         background-position: center center;
         background-repeat: no-repeat;
@@ -110,7 +110,7 @@ const StoryPage: PageComponent = {
         background:
           linear-gradient(90deg, rgba(250,246,240,0.96) 0%, rgba(250,246,240,0.82) 44%, rgba(250,246,240,0.32) 72%, rgba(250,246,240,0.14) 100%),
           linear-gradient(180deg, rgba(250,246,240,0.22) 0%, rgba(250,246,240,0.08) 46%, rgba(250,246,240,0.34) 100%),
-          url('/story-second-bg.png');
+          url('/story-second-bg.webp');
         background-color: var(--color-ivory);
         background-position: center center;
         background-repeat: no-repeat;
@@ -155,7 +155,7 @@ const StoryPage: PageComponent = {
         background:
           linear-gradient(90deg, rgba(250,246,240,0.18) 0%, rgba(250,246,240,0.16) 38%, rgba(250,246,240,0.66) 72%, rgba(250,246,240,0.9) 100%),
           linear-gradient(180deg, rgba(250,246,240,0.12) 0%, transparent 42%, rgba(250,246,240,0.38) 100%),
-          url('/story-third-bg.png');
+          url('/story-third-bg.webp');
         background-color: var(--color-ivory);
         background-position: center center;
         background-repeat: no-repeat;
@@ -511,7 +511,7 @@ const StoryPage: PageComponent = {
         z-index: -1;
         background:
           radial-gradient(ellipse 70% 52% at 50% 50%, rgba(250,246,240,0.4), transparent 70%),
-          url('/产品展示图/red-worn-lifestyle.png');
+          url('/product-images/red-worn.webp');
         background-position: center 42%;
         background-size: cover;
         background-repeat: no-repeat;
@@ -557,7 +557,7 @@ const StoryPage: PageComponent = {
           background:
             linear-gradient(180deg, rgba(250,246,240,0.48) 0%, rgba(250,246,240,0.7) 48%, rgba(250,246,240,0.82) 100%),
             radial-gradient(ellipse 70% 42% at 50% 50%, rgba(250,246,240,0.74), transparent 76%),
-            url('/story-hero-bg-mobile.png');
+            url('/story-hero-bg-mobile.webp');
           background-position: center center;
           background-repeat: no-repeat;
           background-size: cover;
@@ -576,7 +576,7 @@ const StoryPage: PageComponent = {
           min-height: 100svh;
           background:
             linear-gradient(180deg, rgba(250,246,240,0.96) 0%, rgba(250,246,240,0.84) 58%, rgba(250,246,240,0.44) 100%),
-            url('/story-second-bg-mobile.png');
+            url('/story-second-bg-mobile.webp');
           background-position: center center;
           background-repeat: no-repeat;
           background-size: cover;
@@ -604,7 +604,7 @@ const StoryPage: PageComponent = {
           min-height: 100svh;
           background:
             linear-gradient(180deg, rgba(250,246,240,0.94) 0%, rgba(250,246,240,0.7) 46%, rgba(250,246,240,0.2) 100%),
-            url('/story-third-bg-mobile.png');
+            url('/story-third-bg-mobile.webp');
           background-position: center center;
           background-repeat: no-repeat;
           background-size: cover;
@@ -692,7 +692,7 @@ const StoryPage: PageComponent = {
           <p>Long before the world had names for its sorrow, the sky was said to have broken. Light fell through the cracks. The earth trembled. Rivers rose, and the people looked upward, searching for protection. Then came Nuwa, the ancient goddess of creation. She gathered five sacred stones, each carrying a color of the world, and melted them into light strong enough to mend the heavens.</p>
         </div>
         <div class="story-image-placeholder myth-image">
-          <img src="/story-myth-bg.png" alt="An elegant Eastern myth scene with clouds, sacred stones, and soft golden light" loading="lazy">
+          <img src="/story-myth-bg.webp" alt="An elegant Eastern myth scene with clouds, sacred stones, and soft golden light" loading="lazy" decoding="async">
         </div>
       </div>
     `;
@@ -704,7 +704,7 @@ const StoryPage: PageComponent = {
     fifthSection.innerHTML = `
       <div class="story-myth-layout">
         <div class="story-image-placeholder fifth-stone-image">
-          <img src="${productAsset('ChatGPT Image 2026年5月14日 15_43_59 (8).png')}" alt="A luminous Fifth Stone necklace resting in soft ivory light" loading="lazy">
+          <img src="${productAsset('white-detail.webp')}" alt="A luminous Fifth Stone necklace resting in soft ivory light" loading="lazy" decoding="async">
         </div>
         <div class="story-myth-text">
           <h2 class="section-title">But one stone remained.</h2>
@@ -776,35 +776,35 @@ const StoryPage: PageComponent = {
       <div class="color-grid">
         <div class="color-card">
           <div class="color-swatch red">
-            <img src="${productAsset('红 (1).png')}" alt="Red Fifth Stone necklace concept" loading="lazy">
+            <img src="${productAsset('red-main.webp')}" alt="Red Fifth Stone necklace concept" loading="lazy" decoding="async">
           </div>
           <h3>Red Stone</h3>
           <p>Passion / Life Force</p>
         </div>
         <div class="color-card">
           <div class="color-swatch green">
-            <img src="${productAsset('绿.png')}" alt="Green Fifth Stone necklace concept" loading="lazy">
+            <img src="${productAsset('green-main.webp')}" alt="Green Fifth Stone necklace concept" loading="lazy" decoding="async">
           </div>
           <h3>Green Stone</h3>
           <p>Healing / Renewal</p>
         </div>
         <div class="color-card">
           <div class="color-swatch blue">
-            <img src="${productAsset('蓝.png')}" alt="Blue Fifth Stone necklace concept" loading="lazy">
+            <img src="${productAsset('blue-main.webp')}" alt="Blue Fifth Stone necklace concept" loading="lazy" decoding="async">
           </div>
           <h3>Blue Stone</h3>
           <p>Clarity / Inner Peace</p>
         </div>
         <div class="color-card">
           <div class="color-swatch white">
-            <img src="${productAsset('白.png')}" alt="White Fifth Stone necklace concept" loading="lazy">
+            <img src="${productAsset('white-main.webp')}" alt="White Fifth Stone necklace concept" loading="lazy" decoding="async">
           </div>
           <h3>White Stone</h3>
           <p>Protection / Purity</p>
         </div>
         <div class="color-card">
           <div class="color-swatch black">
-            <img src="${productAsset('黑.png')}" alt="Black Fifth Stone necklace concept" loading="lazy">
+            <img src="${productAsset('black-main.webp')}" alt="Black Fifth Stone necklace concept" loading="lazy" decoding="async">
           </div>
           <h3>Black Stone</h3>
           <p>Mystery / Inner Strength</p>
@@ -822,7 +822,7 @@ const StoryPage: PageComponent = {
     meaningSection.innerHTML = `
       <div class="story-meaning">
         <div class="story-meaning-image" aria-hidden="true">
-          <img src="${productAsset('白.png')}" alt="">
+          <img src="${productAsset('white-main.webp')}" alt="" loading="lazy" decoding="async">
         </div>
         <h2 class="section-title">For those who are still becoming whole.</h2>
         <p class="section-subtitle">Wearing the fifth stone is not about perfection. It is about acknowledging the cracks — in the sky, in the world, in ourselves — and choosing to mend them. It is for the ones who carry hidden fractures, who are quietly rebuilding, who believe that broken things can become beautiful again.</p>

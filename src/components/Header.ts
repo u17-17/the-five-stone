@@ -8,7 +8,7 @@ export function renderHeader(): HTMLElement {
     <div class="header-inner">
       <a href="#home" class="logo" data-nav="home">
         <span class="logo-mark" aria-hidden="true">
-          <img src="/brand-logo-mark.png" alt="">
+          <img src="/brand-logo-mark.webp" alt="" width="555" height="540" decoding="async">
         </span>
         <span>THE FIFTH STONE</span>
       </a>

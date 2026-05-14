@@ -1520,7 +1520,7 @@ body::after {
       rgba(250,246,240,0.92) 31%,
       rgba(250,246,240,0.42) 55%,
       rgba(250,246,240,0.06) 100%),
-    url('/hero-fifth-stone.png');
+    url('/hero-fifth-stone.webp');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1695,7 +1695,7 @@ body::after {
       rgba(250,246,240,0.2) 28%,
       rgba(245,239,230,0.12) 74%,
       var(--color-cream) 100%),
-    url('/story-myth-bg.png');
+    url('/story-myth-bg.webp');
   background-color: var(--color-cream);
   background-position: center;
   background-repeat: no-repeat;
@@ -2125,7 +2125,7 @@ body::after {
       rgba(250,246,240,0.18) 68%,
       rgba(250,246,240,0.04) 100%),
     linear-gradient(180deg, rgba(250,246,240,0.16), rgba(250,246,240,0.42)),
-    url('/signup-myth-bg.png');
+    url('/signup-myth-bg.webp');
   background-color: var(--color-ivory);
   background-position: center;
   background-repeat: no-repeat;
@@ -2206,7 +2206,7 @@ body::after {
         rgba(250,246,240,0.92) 30%,
         rgba(250,246,240,0.58) 58%,
         rgba(250,246,240,0.18) 100%),
-      url('/hero-fifth-stone-mobile.png');
+      url('/hero-fifth-stone-mobile.webp');
     background-position: center bottom;
   }
 
@@ -2282,7 +2282,7 @@ body::after {
         rgba(250,246,240,0.96) 0%,
         rgba(250,246,240,0.82) 48%,
         rgba(250,246,240,0.42) 100%),
-      url('/signup-myth-bg-mobile.png');
+      url('/signup-myth-bg-mobile.webp');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -2302,7 +2302,7 @@ body::after {
         rgba(250,246,240,0.88) 42%,
         rgba(250,246,240,0.46) 74%,
         var(--color-cream) 100%),
-      url('/story-myth-bg-mobile.png');
+      url('/story-myth-bg-mobile.webp');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
