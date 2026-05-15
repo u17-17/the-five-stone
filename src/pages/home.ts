@@ -9,15 +9,17 @@ const products = [
     meaning: 'Passion & Life Force',
     color: '#c0392b',
     image: '/product-images/red-main.webp',
+    hoverImage: '/product-images/red-worn.webp',
     alt: 'Red Fifth Stone myth-inspired crystal necklace for courage and life force',
   },
   {
-    id: 'blue',
-    name: 'Blue Stone Necklace',
-    meaning: 'Clarity & Inner Peace',
-    color: '#2c6e91',
-    image: '/product-images/blue-main.webp',
-    alt: 'Blue Fifth Stone symbolic necklace for clarity and calm protection',
+    id: 'gold',
+    name: 'Gold Stone Necklace',
+    meaning: 'Warmth & Protection',
+    color: '#c49a42',
+    image: '/product-images/gold-main.webp',
+    hoverImage: '/product-images/gold-worn.webp',
+    alt: 'Gold Fifth Stone Golden Crystal necklace for warmth, protection, and light',
   },
   {
     id: 'green',
@@ -25,6 +27,7 @@ const products = [
     meaning: 'Healing & Renewal',
     color: '#4a7c59',
     image: '/product-images/green-main.webp',
+    hoverImage: '/product-images/green-worn.webp',
     alt: 'Green Fifth Stone Eastern mythology jewelry necklace for renewal',
   },
   {
@@ -33,6 +36,7 @@ const products = [
     meaning: 'Protection & Purity',
     color: '#d4ccc0',
     image: '/product-images/white-main.webp',
+    hoverImage: '/product-images/white-worn.webp',
     alt: 'White Fifth Stone protection necklace with luminous symbolic stone',
   },
   {
@@ -41,6 +45,7 @@ const products = [
     meaning: 'Mystery & Inner Strength',
     color: '#3d3a35',
     image: '/product-images/black-main.webp',
+    hoverImage: '/product-images/black-worn.webp',
     alt: 'Black Fifth Stone symbolic jewelry necklace for inner strength',
   },
 ];
@@ -58,9 +63,9 @@ const testimonials = [
     stone: 'White Stone',
   },
   {
-    quote: 'I chose Blue during a noisy season. It has become the piece I touch before hard conversations.',
+    quote: 'I chose Gold during a dim season. It has become the piece I touch before stepping back into the world.',
     author: 'Avery C.',
-    stone: 'Blue Stone',
+    stone: 'Gold Stone',
   },
   {
     quote: 'The packaging, the story card, the weight of the stone - everything feels quietly sacred.',
@@ -76,7 +81,50 @@ const trustHighlights = [
   'Myth-Inspired Design',
 ];
 
+const heroSlides = [
+  {
+    label: 'Golden Stone',
+    desktop: '/hero-carousel/hero-1.webp',
+    mobile: '/hero-carousel/hero-1-mobile.webp',
+  },
+  {
+    label: 'Red Stone',
+    desktop: '/hero-carousel/hero-2.webp',
+    mobile: '/hero-carousel/hero-2-mobile.webp',
+  },
+  {
+    label: 'White Stone',
+    desktop: '/hero-carousel/hero-3.webp',
+    mobile: '/hero-carousel/hero-3-mobile.webp',
+  },
+  {
+    label: 'Black Stone',
+    desktop: '/hero-carousel/hero-4.webp',
+    mobile: '/hero-carousel/hero-4-mobile.webp',
+  },
+  {
+    label: 'Green Stone',
+    desktop: '/hero-carousel/hero-5.webp',
+    mobile: '/hero-carousel/hero-5-mobile.webp',
+  },
+];
+
+const storyTeaserSlides = [
+  {
+    label: 'Column Hall',
+    desktop: '/home-story-carousel/story-teaser-1.webp',
+    mobile: '/home-story-carousel/story-teaser-1-mobile.webp',
+  },
+  {
+    label: 'Ancient Ruins',
+    desktop: '/home-story-carousel/story-teaser-2.webp',
+    mobile: '/home-story-carousel/story-teaser-2-mobile.webp',
+  },
+];
+
 let _observer: IntersectionObserver | null = null;
+let _heroCarouselTimer: number | null = null;
+let _storyCarouselTimer: number | null = null;
 
 const HomePage: PageComponent = {
   seo: {
@@ -86,12 +134,38 @@ const HomePage: PageComponent = {
   },
 
   render() {
+    if (_heroCarouselTimer !== null) {
+      window.clearInterval(_heroCarouselTimer);
+      _heroCarouselTimer = null;
+    }
+    if (_storyCarouselTimer !== null) {
+      window.clearInterval(_storyCarouselTimer);
+      _storyCarouselTimer = null;
+    }
+
     const page = document.createElement('div');
     page.className = 'home-page';
 
     page.innerHTML = `
       <!-- ===== Screen 1: Hero ===== -->
       <section id="hero" class="home-hero" aria-labelledby="hero-title">
+        <div class="hero-carousel" aria-hidden="true">
+          ${heroSlides.map((slide, index) => `
+            <picture class="hero-slide${index === 0 ? ' active' : ''}">
+              <source media="(max-width: 768px)" srcset="${slide.mobile}">
+              <img
+                src="${slide.desktop}"
+                alt=""
+                width="1600"
+                height="900"
+                loading="${index === 0 ? 'eager' : 'lazy'}"
+                fetchpriority="${index === 0 ? 'high' : 'low'}"
+                decoding="async"
+                draggable="false"
+              >
+            </picture>
+          `).join('')}
+        </div>
         <div class="hero-content">
           <div class="hero-brand-mark" aria-hidden="true">
             <img src="/brand-logo-mark.webp" alt="" width="555" height="540" decoding="async">
@@ -106,10 +180,39 @@ const HomePage: PageComponent = {
             <button class="btn btn-outline hero-secondary" data-scroll="story">Discover the Origin</button>
           </div>
         </div>
+        <div class="hero-carousel-controls" aria-label="Hero image gallery">
+          ${heroSlides.map((slide, index) => `
+            <button
+              class="hero-carousel-dot${index === 0 ? ' active' : ''}"
+              type="button"
+              data-hero-slide="${index}"
+              aria-label="Show ${slide.label} hero image"
+              aria-current="${index === 0 ? 'true' : 'false'}"
+            >
+              ${String(index + 1).padStart(2, '0')}
+            </button>
+          `).join('')}
+        </div>
       </section>
 
       <!-- ===== Screen 2: Story Teaser ===== -->
       <section id="story" class="home-story fade-section" aria-labelledby="story-title">
+        <div class="story-teaser-carousel" aria-hidden="true">
+          ${storyTeaserSlides.map((slide, index) => `
+            <picture class="story-teaser-slide${index === 0 ? ' active' : ''}">
+              <source media="(max-width: 768px)" srcset="${slide.mobile}">
+              <img
+                src="${slide.desktop}"
+                alt=""
+                width="1600"
+                height="900"
+                loading="lazy"
+                decoding="async"
+                draggable="false"
+              >
+            </picture>
+          `).join('')}
+        </div>
         <div class="story-atmosphere story-atmosphere-left" aria-hidden="true"></div>
         <div class="story-atmosphere story-atmosphere-right" aria-hidden="true"></div>
         <div class="story-layout">
@@ -127,6 +230,19 @@ const HomePage: PageComponent = {
               <span>Read the Full Myth</span>
               <span class="story-link-mark" aria-hidden="true"></span>
             </button>
+            <div class="story-teaser-controls" aria-label="Story image gallery">
+              ${storyTeaserSlides.map((slide, index) => `
+                <button
+                  class="story-teaser-dot${index === 0 ? ' active' : ''}"
+                  type="button"
+                  data-story-slide="${index}"
+                  aria-label="Show ${slide.label} story image"
+                  aria-current="${index === 0 ? 'true' : 'false'}"
+                >
+                  ${String(index + 1).padStart(2, '0')}
+                </button>
+              `).join('')}
+            </div>
           </div>
         </div>
       </section>
@@ -137,7 +253,7 @@ const HomePage: PageComponent = {
         <h2 id="brand-intro-title" class="section-title">A necklace for the sky within.</h2>
         <div class="home-brand-intro-copy">
           <p>The Fifth Stone began with a simple image: a final sacred stone left behind after the sky was mended. From that image we create symbolic jewelry for people who want beauty with meaning, not noise. Each myth-inspired necklace is shaped around the language of repair, protection, and rebirth, drawing from Eastern mythology jewelry traditions while staying quiet enough for daily wear.</p>
-          <p>Our crystal necklace collection is made to feel like a private ritual. Red carries courage, green suggests renewal, blue invites calm, white becomes a protection necklace, and black holds mystery and inner strength. The piece is not a promise of magic; it is a wearable reminder. For a gift, a turning point, or an ordinary morning, The Fifth Stone offers a small story about what can be restored, guarded, and begun again. Every detail is meant to make the necklace feel personal before it ever becomes visible to anyone else.</p>
+          <p>Our crystal necklace collection is made to feel like a private ritual. Red carries courage, green suggests renewal, gold holds warmth, white becomes a protection necklace, and black holds mystery and inner strength. The piece is not a promise of magic; it is a wearable reminder. For a gift, a turning point, or an ordinary morning, The Fifth Stone offers a small story about what can be restored, guarded, and begun again. Every detail is meant to make the necklace feel personal before it ever becomes visible to anyone else.</p>
         </div>
       </section>
 
@@ -167,7 +283,8 @@ const HomePage: PageComponent = {
           ${products.map(p => `
             <div class="product-card">
               <div class="product-card-image">
-                <img src="${p.image}" alt="${p.alt}" width="1086" height="1448" loading="lazy" decoding="async">
+                <img class="product-card-image-main" src="${p.image}" alt="${p.alt}" width="1086" height="1448" loading="lazy" decoding="async">
+                <img class="product-card-image-worn" src="${p.hoverImage}" alt="" width="1122" height="1402" loading="lazy" decoding="async" aria-hidden="true">
               </div>
               <h3 class="product-card-name">${p.name}</h3>
               <p class="product-card-meaning">${p.meaning}</p>
@@ -278,8 +395,101 @@ const HomePage: PageComponent = {
       });
     });
 
+    const hero = page.querySelector('.home-hero');
+    const heroSlideEls = Array.from(page.querySelectorAll<HTMLElement>('.hero-slide'));
+    const heroButtons = Array.from(page.querySelectorAll<HTMLButtonElement>('[data-hero-slide]'));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let activeHeroSlide = 0;
+
+    const setHeroSlide = (nextIndex: number) => {
+      activeHeroSlide = (nextIndex + heroSlideEls.length) % heroSlideEls.length;
+      heroSlideEls.forEach((slide, index) => {
+        slide.classList.toggle('active', index === activeHeroSlide);
+      });
+      heroButtons.forEach((button, index) => {
+        const isActive = index === activeHeroSlide;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-current', String(isActive));
+      });
+    };
+
+    const stopHeroCarousel = () => {
+      if (_heroCarouselTimer !== null) {
+        window.clearInterval(_heroCarouselTimer);
+        _heroCarouselTimer = null;
+      }
+    };
+
+    const startHeroCarousel = () => {
+      if (prefersReducedMotion || heroSlideEls.length < 2 || _heroCarouselTimer !== null) return;
+      _heroCarouselTimer = window.setInterval(() => {
+        setHeroSlide(activeHeroSlide + 1);
+      }, 5200);
+    };
+
+    heroButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const nextSlide = Number(button.dataset.heroSlide);
+        stopHeroCarousel();
+        setHeroSlide(nextSlide);
+        startHeroCarousel();
+      });
+    });
+
+    hero?.addEventListener('mouseenter', stopHeroCarousel);
+    hero?.addEventListener('mouseleave', startHeroCarousel);
+    hero?.addEventListener('focusin', stopHeroCarousel);
+    hero?.addEventListener('focusout', startHeroCarousel);
+    startHeroCarousel();
+
+    const storyTeaser = page.querySelector('.home-story');
+    const storySlideEls = Array.from(page.querySelectorAll<HTMLElement>('.story-teaser-slide'));
+    const storyButtons = Array.from(page.querySelectorAll<HTMLButtonElement>('[data-story-slide]'));
+    let activeStorySlide = 0;
+
+    const setStorySlide = (nextIndex: number) => {
+      activeStorySlide = (nextIndex + storySlideEls.length) % storySlideEls.length;
+      storySlideEls.forEach((slide, index) => {
+        slide.classList.toggle('active', index === activeStorySlide);
+      });
+      storyButtons.forEach((button, index) => {
+        const isActive = index === activeStorySlide;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-current', String(isActive));
+      });
+    };
+
+    const stopStoryCarousel = () => {
+      if (_storyCarouselTimer !== null) {
+        window.clearInterval(_storyCarouselTimer);
+        _storyCarouselTimer = null;
+      }
+    };
+
+    const startStoryCarousel = () => {
+      if (prefersReducedMotion || storySlideEls.length < 2 || _storyCarouselTimer !== null) return;
+      _storyCarouselTimer = window.setInterval(() => {
+        setStorySlide(activeStorySlide + 1);
+      }, 5800);
+    };
+
+    storyButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const nextSlide = Number(button.dataset.storySlide);
+        stopStoryCarousel();
+        setStorySlide(nextSlide);
+        startStoryCarousel();
+      });
+    });
+
+    storyTeaser?.addEventListener('mouseenter', stopStoryCarousel);
+    storyTeaser?.addEventListener('mouseleave', startStoryCarousel);
+    storyTeaser?.addEventListener('focusin', stopStoryCarousel);
+    storyTeaser?.addEventListener('focusout', startStoryCarousel);
+    startStoryCarousel();
+
     const form = page.querySelector('.signup-form') as HTMLFormElement | null;
-    form?.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const input = form.querySelector('.signup-input') as HTMLInputElement;
       const status = page.querySelector('.signup-status') as HTMLElement | null;
@@ -290,14 +500,42 @@ const HomePage: PageComponent = {
         input.focus();
         return;
       }
-      trackEvent(analyticsEvents.newsletterSubmit, { source: 'home_signup' });
-      if (status) {
-        status.textContent =
-          'Thank you. Email subscription will be connected with the backend soon.';
-      }
-      btn.textContent = 'Joined';
+
+      btn.textContent = 'Joining...';
       btn.disabled = true;
-      input.value = '';
+      if (status) status.textContent = '';
+
+      try {
+        const response = await fetch('/api/newsletter/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source: 'home_signup' }),
+        });
+
+        const result = (await response.json().catch(() => ({}))) as { error?: string };
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Unable to join right now. Please try again later.');
+        }
+
+        trackEvent(analyticsEvents.newsletterSubmit, { source: 'home_signup' });
+        if (status) {
+          status.textContent = 'Thank you. You are in.';
+        }
+        btn.textContent = 'Joined';
+        input.value = '';
+      } catch (error) {
+        if (status) {
+          status.textContent =
+            error instanceof Error
+              ? error.message
+              : 'Unable to join right now. Please try again later.';
+        }
+        btn.textContent = 'Enter the Circle';
+        btn.disabled = false;
+        return;
+      }
+
       setTimeout(() => {
         btn.textContent = 'Enter the Circle';
         btn.disabled = false;
@@ -320,6 +558,14 @@ const HomePage: PageComponent = {
     if (_observer) {
       _observer.disconnect();
       _observer = null;
+    }
+    if (_heroCarouselTimer !== null) {
+      window.clearInterval(_heroCarouselTimer);
+      _heroCarouselTimer = null;
+    }
+    if (_storyCarouselTimer !== null) {
+      window.clearInterval(_storyCarouselTimer);
+      _storyCarouselTimer = null;
     }
   },
 };

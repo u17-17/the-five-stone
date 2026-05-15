@@ -160,9 +160,9 @@ const StoryPage: PageComponent = {
         display: flex;
         align-items: center;
         background:
-          linear-gradient(90deg, rgba(250,246,240,0.18) 0%, rgba(250,246,240,0.16) 38%, rgba(250,246,240,0.66) 72%, rgba(250,246,240,0.9) 100%),
-          linear-gradient(180deg, rgba(250,246,240,0.12) 0%, transparent 42%, rgba(250,246,240,0.38) 100%),
-          url('/story-third-bg.webp');
+          linear-gradient(90deg, rgba(250,246,240,0.96) 0%, rgba(250,246,240,0.86) 34%, rgba(250,246,240,0.48) 58%, rgba(250,246,240,0.12) 100%),
+          linear-gradient(180deg, rgba(250,246,240,0.78) 0%, rgba(250,246,240,0.1) 42%, rgba(250,246,240,0.46) 100%),
+          url('/story-myth-bg.webp');
         background-color: var(--color-ivory);
         background-position: center center;
         background-repeat: no-repeat;
@@ -172,13 +172,13 @@ const StoryPage: PageComponent = {
       .story-fifth-screen .story-myth-layout {
         width: min(100%, var(--max-width));
         margin: 0 auto;
-        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
       }
 
       .story-fifth-screen .story-myth-text {
-        max-width: 600px;
-        justify-self: end;
-        padding: 24px 0;
+        max-width: 580px;
+        justify-self: start;
+        padding: 28px 0 28px clamp(0px, 1.6vw, 18px);
       }
 
       .story-fifth-screen .section-title {
@@ -189,7 +189,7 @@ const StoryPage: PageComponent = {
       }
 
       .story-fifth-screen .story-myth-text p {
-        max-width: 600px;
+        max-width: 560px;
         font-size: clamp(1.14rem, 1.2vw, 1.32rem);
         line-height: 1.86;
         color: #3a342e;
@@ -439,7 +439,7 @@ const StoryPage: PageComponent = {
 
       .color-swatch.red img { object-position: center; }
       .color-swatch.green img { object-position: center; }
-      .color-swatch.blue img { object-position: center; }
+      .color-swatch.gold img { object-position: center; }
       .color-swatch.white img { object-position: center; }
       .color-swatch.black img { object-position: center; }
 
@@ -624,8 +624,8 @@ const StoryPage: PageComponent = {
         .story-fifth-screen {
           min-height: 100svh;
           background:
-            linear-gradient(180deg, rgba(250,246,240,0.94) 0%, rgba(250,246,240,0.7) 46%, rgba(250,246,240,0.2) 100%),
-            url('/story-third-bg-mobile.webp');
+            linear-gradient(180deg, rgba(250,246,240,0.96) 0%, rgba(250,246,240,0.82) 46%, rgba(250,246,240,0.34) 100%),
+            url('/story-myth-bg-mobile.webp');
           background-position: center center;
           background-repeat: no-repeat;
           background-size: cover;
@@ -823,11 +823,11 @@ const StoryPage: PageComponent = {
           <p>Healing / Renewal</p>
         </div>
         <div class="color-card">
-          <div class="color-swatch blue">
-            <img src="${productAsset('blue-main.webp')}" alt="Blue Fifth Stone crystal necklace for clarity and inner peace" width="1086" height="1448" loading="lazy" decoding="async">
+          <div class="color-swatch gold">
+            <img src="${productAsset('gold-main.webp')}" alt="Gold Fifth Stone Golden Crystal necklace for warmth, protection, and light" width="1086" height="1448" loading="lazy" decoding="async">
           </div>
-          <h3>Blue Stone</h3>
-          <p>Clarity / Inner Peace</p>
+          <h3>Gold Stone</h3>
+          <p>Warmth / Protection</p>
         </div>
         <div class="color-card">
           <div class="color-swatch white">

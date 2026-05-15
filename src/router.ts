@@ -38,12 +38,12 @@ const pageSeo: Partial<Record<PageName, PageSeo>> = {
   product: {
     title: 'The Fifth Stone Collection | Symbolic Stone Necklaces',
     description:
-      'Explore The Fifth Stone symbolic necklaces inspired by the myth of mending the sky.',
+      'Explore The Fifth Stone symbolic necklaces in red, green, gold, white, and black, each inspired by the myth of mending the sky.',
   },
   collection: {
     title: 'The Fifth Stone Collection | Symbolic Stone Necklaces',
     description:
-      'Explore The Fifth Stone symbolic necklaces inspired by the myth of mending the sky.',
+      'Explore The Fifth Stone symbolic necklaces in red, green, gold, white, and black, each inspired by the myth of mending the sky.',
   },
 };
 
@@ -287,14 +287,14 @@ function getProductSchema() {
     image: [
       `${SITE_URL}/product-images/red-main.webp`,
       `${SITE_URL}/product-images/green-main.webp`,
-      `${SITE_URL}/product-images/blue-main.webp`,
+      `${SITE_URL}/product-images/gold-main.webp`,
       `${SITE_URL}/product-images/white-main.webp`,
       `${SITE_URL}/product-images/black-main.webp`,
     ],
     description:
       'A myth-inspired crystal necklace collection from The Fifth Stone, designed as symbolic jewelry rooted in Eastern mythology, protection, repair, and rebirth.',
     material:
-      'Certified stone materials with handmade silver-wrapped copper chain and hot-stamped finish',
+      'Certified red Liuli glass, green peridot, golden crystal, white crystal, and black obsidian materials with handmade silver-wrapped copper chain and hot-stamped finish',
     category: 'Jewelry > Necklaces',
     offers: {
       '@type': 'Offer',

@@ -1750,17 +1750,8 @@ body::after {
   margin: 0;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   background-color: var(--color-ivory);
-  background-image:
-    linear-gradient(90deg,
-      rgba(250,246,240,0.97) 0%,
-      rgba(250,246,240,0.92) 31%,
-      rgba(250,246,240,0.42) 55%,
-      rgba(250,246,240,0.06) 100%),
-    url('/hero-fifth-stone.webp');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 .home-hero::after {
@@ -1768,14 +1759,63 @@ body::after {
   position: absolute;
   inset: auto 0 0;
   height: 180px;
+  z-index: 1;
   pointer-events: none;
   background: linear-gradient(180deg, rgba(250,246,240,0) 0%, var(--color-ivory) 100%);
+}
+
+.hero-carousel {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #e8dfd3;
+}
+
+.hero-carousel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg,
+      rgba(250,246,240,0.97) 0%,
+      rgba(250,246,240,0.92) 31%,
+      rgba(250,246,240,0.42) 55%,
+      rgba(250,246,240,0.06) 100%),
+    linear-gradient(180deg, rgba(44,40,36,0.05) 0%, rgba(44,40,36,0.02) 62%, rgba(44,40,36,0.14) 100%);
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.hero-slide.active {
+  opacity: 1;
+}
+
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.01);
+  transition: transform 7s ease;
+}
+
+.hero-slide.active img {
+  transform: scale(1.045);
 }
 
 .hero-content {
   max-width: 590px;
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .hero-brand-mark {
@@ -1858,6 +1898,60 @@ body::after {
   backdrop-filter: blur(8px);
 }
 
+.hero-carousel-controls {
+  position: absolute;
+  left: clamp(24px, 6.8vw, 112px);
+  right: clamp(24px, 6.8vw, 112px);
+  bottom: 34px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.hero-carousel-dot {
+  width: 44px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(184,160,124,0.36);
+  border-radius: var(--radius-sm);
+  background: rgba(250,246,240,0.52);
+  color: rgba(62,55,47,0.72);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 26px rgba(65,53,38,0.08);
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.hero-carousel-dot:hover,
+.hero-carousel-dot.active {
+  background: rgba(250,246,240,0.82);
+  border-color: rgba(184,160,124,0.72);
+  color: var(--color-dark);
+}
+
+.hero-carousel-dot:hover {
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide,
+  .hero-slide img,
+  .story-teaser-slide,
+  .story-teaser-slide img {
+    transition: none;
+  }
+
+  .hero-slide.active img,
+  .story-teaser-slide.active img {
+    transform: scale(1.01);
+  }
+}
+
 .hero-visual {
   display: flex;
   align-items: center;
@@ -1921,27 +2015,13 @@ body::after {
 
 /* --- Story Teaser --- */
 .home-story {
-  background:
-    linear-gradient(90deg,
-      rgba(250,246,240,0.98) 0%,
-      rgba(250,246,240,0.94) 34%,
-      rgba(250,246,240,0.68) 56%,
-      rgba(250,246,240,0.24) 100%),
-    linear-gradient(180deg,
-      rgba(250,246,240,0.84) 0%,
-      rgba(250,246,240,0.2) 28%,
-      rgba(245,239,230,0.12) 74%,
-      var(--color-cream) 100%),
-    url('/story-myth-bg.webp');
   background-color: var(--color-cream);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   max-width: 100%;
   min-height: 100dvh;
   padding: 108px clamp(24px, 5vw, 76px) 0;
   position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .home-story::before {
@@ -1955,6 +2035,58 @@ body::after {
     linear-gradient(90deg, rgba(184,160,124,0.06) 1px, transparent 1px);
   background-size: 96px 96px;
   mask-image: linear-gradient(90deg, #000 0%, transparent 70%);
+}
+
+.story-teaser-carousel {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--color-cream);
+}
+
+.story-teaser-carousel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg,
+      rgba(250,246,240,0.98) 0%,
+      rgba(250,246,240,0.94) 35%,
+      rgba(250,246,240,0.62) 58%,
+      rgba(250,246,240,0.16) 100%),
+    linear-gradient(180deg,
+      rgba(250,246,240,0.78) 0%,
+      rgba(250,246,240,0.16) 28%,
+      rgba(245,239,230,0.08) 72%,
+      var(--color-cream) 100%);
+}
+
+.story-teaser-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.story-teaser-slide.active {
+  opacity: 1;
+}
+
+.story-teaser-slide img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.01);
+  transition: transform 7s ease;
+}
+
+.story-teaser-slide.active img {
+  transform: scale(1.04);
 }
 
 .story-atmosphere {
@@ -2110,6 +2242,42 @@ body::after {
 .story-link:focus-visible {
   outline: 1px solid var(--color-muted-gold);
   outline-offset: 5px;
+}
+
+.story-teaser-controls {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.story-teaser-dot {
+  width: 42px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(184,160,124,0.36);
+  border-radius: var(--radius-sm);
+  background: rgba(250,246,240,0.55);
+  color: rgba(62,55,47,0.72);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 24px rgba(65,53,38,0.08);
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.story-teaser-dot:hover,
+.story-teaser-dot.active {
+  background: rgba(250,246,240,0.84);
+  border-color: rgba(184,160,124,0.72);
+  color: var(--color-dark);
+}
+
+.story-teaser-dot:hover {
+  transform: translateY(-2px);
 }
 
 .story-cta {
@@ -2269,7 +2437,8 @@ body::after {
   pointer-events: none;
 }
 
-.product-card:hover {
+.product-card:hover,
+.product-card:focus-within {
   transform: translateY(-6px);
   border-color: var(--card-border-hover);
   background: linear-gradient(180deg, rgba(250,246,240,0.9), rgba(248,242,234,0.7));
@@ -2302,20 +2471,39 @@ body::after {
   background: rgba(110,92,68,0.14);
   filter: blur(14px);
   pointer-events: none;
+  z-index: 3;
 }
 
 .product-card-image img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   transform: scale(1);
   filter: drop-shadow(0 12px 16px rgba(92,78,62,0.1));
-  position: relative;
-  z-index: 1;
-  transition: transform 0.35s ease, filter 0.35s ease;
+  transition: opacity 0.35s ease, transform 0.45s ease, filter 0.35s ease;
 }
 
-.product-card:hover .product-card-image img {
+.product-card-image-main {
+  z-index: 1;
+  opacity: 1;
+}
+
+.product-card-image-worn {
+  z-index: 2;
+  opacity: 0;
+}
+
+.product-card:hover .product-card-image-main,
+.product-card:focus-within .product-card-image-main {
+  opacity: 0;
+  transform: scale(1.035);
+}
+
+.product-card:hover .product-card-image-worn,
+.product-card:focus-within .product-card-image-worn {
+  opacity: 1;
   transform: scale(1.045);
   filter: drop-shadow(0 16px 20px rgba(92,78,62,0.14));
 }
@@ -2558,15 +2746,21 @@ body::after {
   .home-hero {
     align-items: flex-start;
     min-height: 760px;
-    padding: calc(var(--header-height) + 48px) 24px 60px;
-    background-image:
+    padding: calc(var(--header-height) + 48px) 24px 104px;
+  }
+
+  .hero-carousel::after {
+    background:
       linear-gradient(180deg,
         rgba(250,246,240,0.96) 0%,
         rgba(250,246,240,0.92) 30%,
         rgba(250,246,240,0.58) 58%,
         rgba(250,246,240,0.18) 100%),
-      url('/hero-fifth-stone-mobile.webp');
-    background-position: center bottom;
+      linear-gradient(90deg, rgba(44,40,36,0.08), rgba(44,40,36,0));
+  }
+
+  .hero-slide img {
+    object-position: center bottom;
   }
 
   .hero-content {
@@ -2611,6 +2805,21 @@ body::after {
   .hero-secondary {
     width: min(100%, 280px);
     min-width: 0;
+  }
+
+  .hero-carousel-controls {
+    left: 24px;
+    right: 24px;
+    bottom: 28px;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .hero-carousel-dot {
+    width: 38px;
+    height: 32px;
+    font-size: 0.62rem;
+    background: rgba(250,246,240,0.68);
   }
 
   .concepts-grid {
@@ -2667,16 +2876,21 @@ body::after {
   .home-story {
     min-height: auto;
     padding: 82px 22px 0;
+    background: var(--color-cream);
+  }
+
+  .story-teaser-carousel::after {
     background:
       linear-gradient(180deg,
         rgba(250,246,240,0.98) 0%,
         rgba(250,246,240,0.88) 42%,
         rgba(250,246,240,0.46) 74%,
         var(--color-cream) 100%),
-      url('/story-myth-bg-mobile.webp');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+      linear-gradient(90deg, rgba(250,246,240,0.18), rgba(250,246,240,0));
+  }
+
+  .story-teaser-slide img {
+    object-position: center bottom;
   }
 
   .home-story::before {
@@ -2710,6 +2924,11 @@ body::after {
   .story-body {
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .story-teaser-controls {
+    justify-content: center;
+    margin-top: 18px;
   }
 
   .story-verse {

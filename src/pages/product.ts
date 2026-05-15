@@ -60,10 +60,10 @@ const PRODUCT_IMAGE_DIMENSIONS: Record<string, ImageDimensions> = {
   'green-worn.webp': { width: 1122, height: 1402 },
   'green-detail.webp': { width: 1122, height: 1402 },
   'green-packaging.webp': { width: 1448, height: 1086 },
-  'blue-main.webp': { width: 1086, height: 1448 },
-  'blue-worn.webp': { width: 1122, height: 1402 },
-  'blue-detail.webp': { width: 1122, height: 1402 },
-  'blue-packaging.webp': { width: 1448, height: 1086 },
+  'gold-main.webp': { width: 1086, height: 1448 },
+  'gold-worn.webp': { width: 1122, height: 1402 },
+  'gold-detail.webp': { width: 1122, height: 1402 },
+  'gold-packaging.webp': { width: 1448, height: 1086 },
   'white-main.webp': { width: 1086, height: 1448 },
   'white-worn.webp': { width: 1122, height: 1402 },
   'white-detail.webp': { width: 1122, height: 1402 },
@@ -120,21 +120,21 @@ const STONE_COLORS: StoneColor[] = [
     },
   },
   {
-    id: 'blue',
-    name: 'Blue',
-    hex: '#2980b9',
-    subtitle: 'Clarity / Peace / Inner Balance',
+    id: 'gold',
+    name: 'Gold',
+    hex: '#c49a42',
+    subtitle: 'Warmth / Protection / Light',
     description:
-      'Blue labradorite — the stone of inner light. A reminder to breathe, to still the mind, and to trust the quiet voice within.',
+      'Golden crystal — the stone of warmth and light. A reminder to move through change with steadiness, protection, and a quiet inner glow.',
     longDescription:
-      'The Blue Stone Necklace is made for clarity, inner quiet, and the space between reaction and response. Its certified labradorite material gives this crystal necklace a calm visual rhythm, while the story behind it keeps the piece emotionally anchored. Blue is for the wearer who wants symbolic jewelry that feels thoughtful, steady, and easy to return to during a crowded day. As a myth-inspired necklace shaped by Eastern mythology jewelry, it suggests still water, open sky, and the protection of a clear mind.',
-    gradient: 'linear-gradient(135deg, #2980b9, #3498db, #2980b9)',
-    image: productAsset('blue-main.webp'),
+      'The Gold Stone Necklace is made for warmth, protection, and luminous confidence. Its golden crystal catches the light with a soft, sunlit glow, giving this myth-inspired necklace a sense of presence without becoming loud. Gold is for the wearer who wants symbolic jewelry that feels bright, steady, and quietly protective through daily transitions. Rooted in Eastern mythology jewelry and the image of a sacred stone left behind after the sky was repaired, it becomes a crystal necklace for courage, renewal, and the light you choose to carry.',
+    gradient: 'linear-gradient(135deg, #9f7624, #f0cf7a, #c49a42)',
+    image: productAsset('gold-main.webp'),
     images: {
-      main: productAsset('blue-main.webp'),
-      worn: productAsset('blue-worn.webp'),
-      detail: productAsset('blue-detail.webp'),
-      packaging: productAsset('blue-packaging.webp'),
+      main: productAsset('gold-main.webp'),
+      worn: productAsset('gold-worn.webp'),
+      detail: productAsset('gold-detail.webp'),
+      packaging: productAsset('gold-packaging.webp'),
     },
   },
   {
@@ -185,8 +185,8 @@ const REVIEWS: ReviewData[] = [
   {
     name: 'Marcus T.',
     rating: 5,
-    text: 'Bought the Blue for clarity during a difficult season. It\'s subtle enough for daily wear but meaningful enough to never take off.',
-    colorName: 'Blue',
+    text: 'Bought the Gold for warmth during a difficult season. It\'s subtle enough for daily wear but meaningful enough to never take off.',
+    colorName: 'Gold',
   },
   {
     name: 'Sophia L.',
@@ -223,7 +223,7 @@ const FAQS: FAQData[] = [
   },
   {
     q: 'Is this a real gemstone?',
-    a: 'Each color uses certified material: black obsidian, white crystal, red Liuli glass, blue labradorite, and green peridot. Natural color and texture may vary slightly from piece to piece.',
+    a: 'Each color uses certified material: black obsidian, white crystal, red Liuli glass, golden crystal, and green peridot. Natural color and texture may vary slightly from piece to piece.',
   },
   {
     q: 'What is the return policy?',
@@ -347,7 +347,7 @@ const ProductPage: PageComponent = {
   seo: {
     title: 'The Fifth Stone Collection | Symbolic Stone Necklaces',
     description:
-      'Choose your Fifth Stone necklace in red, green, blue, white, or black, each carrying a symbolic meaning inspired by the myth of mending the sky.',
+      'Choose your Fifth Stone necklace in red, green, gold, white, or black, each carrying a symbolic meaning inspired by the myth of mending the sky.',
   },
 
   render() {
@@ -356,8 +356,9 @@ const ProductPage: PageComponent = {
 
     /* ---- state ---- */
     const params = getPageParams();
-    let selectedIndex = params.color
-      ? Math.max(0, STONE_COLORS.findIndex(c => c.id === params.color))
+    const requestedColor = params.color === 'blue' ? 'gold' : params.color;
+    let selectedIndex = requestedColor
+      ? Math.max(0, STONE_COLORS.findIndex(c => c.id === requestedColor))
       : 0;
 
     const getColor = (i: number): StoneColor => STONE_COLORS[i];
@@ -643,7 +644,7 @@ const ProductPage: PageComponent = {
       {
         label: 'Stone',
         value:
-          'Certified materials by color: black obsidian, white crystal, red Liuli glass, blue labradorite, and green peridot.',
+          'Certified materials by color: black obsidian, white crystal, red Liuli glass, golden crystal, and green peridot.',
       },
       {
         label: 'Chain',

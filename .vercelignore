@@ -1,0 +1,5 @@
+node_modules
+dist
+*.log
+改/
+public/产品展示图/
