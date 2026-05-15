@@ -1,5 +1,6 @@
 import type { PageComponent, PageName, PageSeo } from './types';
 import { trackPageView } from './lib/analytics';
+import { PRODUCT_PRICE, SUPPORT_EMAIL } from './siteConfig';
 
 type PageParams = Record<string, string>;
 
@@ -122,12 +123,12 @@ const faqSchemaItems = [
   {
     question: 'How long does shipping take?',
     answer:
-      'Shipping time depends on destination, carrier, customs process, and local delivery conditions. Please review the Shipping Policy for details.',
+      'Orders ship from China. Shipping time depends on destination, carrier, customs process, and local delivery conditions. Please review the Shipping Policy for details.',
   },
   {
     question: 'Can I return my order?',
     answer:
-      'Eligible return requests are accepted within 14 days after delivery. Items must be unused, unworn, undamaged, and returned in original packaging.',
+      'Eligible no-reason return or exchange requests are accepted within 14 days after delivery. Return shipping is paid by the customer and is currently $10.',
   },
 ];
 
@@ -215,7 +216,7 @@ function getOrganizationSchema() {
     name: BRAND_NAME,
     url: `${SITE_URL}/`,
     logo: `${SITE_URL}/brand-logo-mark.webp`,
-    email: 'support@thefifthstone.com',
+    email: SUPPORT_EMAIL,
   };
 }
 
@@ -292,13 +293,14 @@ function getProductSchema() {
     ],
     description:
       'A myth-inspired crystal necklace collection from The Fifth Stone, designed as symbolic jewelry rooted in Eastern mythology, protection, repair, and rebirth.',
-    material: 'Semi-precious gemstone with 14k gold-filled or sterling silver chain',
+    material:
+      'Certified stone materials with handmade silver-wrapped copper chain and hot-stamped finish',
     category: 'Jewelry > Necklaces',
     offers: {
       '@type': 'Offer',
       url: `${SITE_URL}/collection`,
       priceCurrency: 'USD',
-      price: '49.00',
+      price: `${PRODUCT_PRICE}.00`,
       availability: 'https://schema.org/InStock',
       itemCondition: 'https://schema.org/NewCondition',
     },
@@ -379,7 +381,7 @@ async function renderPage(page: PageName) {
     app.appendChild(contentArea);
   }
 
-  contentArea.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;color:#b8a07c;">Loading…</div>';
+  contentArea.innerHTML = '<div class="route-status route-loading">Loading...</div>';
 
   try {
     currentParams = { ...pendingParams };
@@ -399,7 +401,7 @@ async function renderPage(page: PageName) {
     window.scrollTo(0, 0);
   } catch (err) {
     console.error('Page load error:', err);
-    contentArea.innerHTML = '<div style="padding:8rem 2rem;text-align:center;color:#999;"><p>Page failed to load. Please try again.</p></div>';
+    contentArea.innerHTML = '<div class="route-status route-error"><p>Page failed to load. Please try again.</p></div>';
   }
 }
 

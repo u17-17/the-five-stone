@@ -1,6 +1,7 @@
 import type { PageSeo } from '../types';
+import { SUPPORT_EMAIL } from '../siteConfig';
 
-export const SUPPORT_EMAIL = 'support@thefifthstone.com';
+export { SUPPORT_EMAIL };
 
 export type PolicyRoute =
   | 'shipping-policy'
@@ -60,7 +61,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'We aim to ship to selected international destinations. Available shipping regions may vary depending on logistics conditions, local regulations, and carrier availability.',
+            text: 'Orders are shipped from China. We aim to ship to selected international destinations, subject to logistics conditions, local regulations, and carrier availability.',
           },
           {
             type: 'paragraph',
@@ -86,7 +87,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'Shipping fees, if applicable, will be displayed at checkout before you complete your order. Promotional free shipping offers may be available from time to time and may be subject to specific conditions.',
+            text: 'The current new customer offer includes free shipping. If shipping fees apply to a future order or destination, they will be displayed at checkout before you complete your order.',
           },
         ],
       },
@@ -155,7 +156,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
       {
         heading: 'Return Window',
         blocks: [
-          { type: 'paragraph', text: 'We accept return requests within 14 days after the order is delivered.' },
+          { type: 'paragraph', text: 'We accept no-reason return or exchange requests within 14 days after the order is delivered.' },
           {
             type: 'paragraph',
             text: 'To be eligible for a return, the item must be unused, unworn, undamaged, and returned in its original packaging with all included materials.',
@@ -202,7 +203,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'Unless the item arrives damaged, defective, or incorrect due to our error, customers are responsible for return shipping costs.',
+            text: 'Customers are responsible for return shipping costs for no-reason returns or exchanges. The current return shipping fee is $10.',
           },
           {
             type: 'paragraph',
@@ -224,15 +225,15 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         ],
       },
       {
-        heading: 'Damaged, Defective, or Incorrect Items',
+        heading: 'Product Issues Within One Month',
         blocks: [
           {
             type: 'paragraph',
-            text: `If your item arrives damaged, defective, or incorrect, please contact us within 7 days of delivery at ${SUPPORT_EMAIL}.`,
+            text: `If a product issue appears within one month after purchase, please contact us at ${SUPPORT_EMAIL} for replacement support.`,
           },
           {
             type: 'paragraph',
-            text: 'Please include your order number and clear photos or videos of the issue. We will review the case and offer a suitable solution, which may include a replacement, refund, or store credit depending on the situation.',
+            text: 'Please include your order number and clear photos or videos of the issue. We will review the case and offer a suitable solution, which may include a replacement when the issue qualifies.',
           },
         ],
       },
@@ -428,7 +429,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'We do our best to display product images, colors, descriptions, materials, and details as accurately as possible.',
+            text: 'We do our best to display product images, colors, descriptions, materials, certifications, and details as accurately as possible.',
           },
           {
             type: 'paragraph',
@@ -454,7 +455,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'Product prices, availability, promotions, and shipping options may change without notice.',
+            text: 'The current product offer lists an original price of $168 and a new customer price of $158, including a $10 first-order discount and free shipping. Product prices, availability, promotions, and shipping options may change without notice.',
           },
           {
             type: 'paragraph',
@@ -660,7 +661,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'Shipping time depends on your destination, carrier, customs process, and local delivery conditions. Please check our Shipping Policy for more details.',
+            text: 'Orders ship from China. Shipping time depends on your destination, carrier, customs process, and local delivery conditions. Please check our Shipping Policy for more details.',
           },
         ],
       },
@@ -669,16 +670,16 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'We accept eligible return requests within 14 days after delivery. Items must be unused, unworn, undamaged, and returned in their original packaging. Please review our Return & Refund Policy before requesting a return.',
+            text: 'We accept 14-day no-reason returns or exchanges. Items must be unused, unworn, undamaged, and returned in their original packaging. Return shipping is paid by the customer and is currently $10.',
           },
         ],
       },
       {
-        heading: 'What should I do if my item arrives damaged?',
+        heading: 'What should I do if my item has a product issue?',
         blocks: [
           {
             type: 'paragraph',
-            text: `Please contact us within 7 days of delivery at ${SUPPORT_EMAIL}. Include your order number and clear photos or videos of the issue so we can review your case.`,
+            text: `If a product issue appears within one month after purchase, contact us at ${SUPPORT_EMAIL}. Include your order number and clear photos or videos so we can review replacement support.`,
           },
         ],
       },
@@ -687,7 +688,7 @@ export const policyPages: Record<PolicyRoute, PolicyPageContent> = {
         blocks: [
           {
             type: 'paragraph',
-            text: 'We aim to ship to selected international destinations. Available regions may vary depending on logistics conditions and carrier availability.',
+            text: 'Orders ship from China to selected international destinations. Available regions may vary depending on logistics conditions and carrier availability.',
           },
         ],
       },

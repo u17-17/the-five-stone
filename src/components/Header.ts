@@ -1,11 +1,13 @@
 import { navigateTo } from '../router';
 import { getCart } from '../cart';
 import { analyticsEvents, trackEvent } from '../lib/analytics';
+import type { PageName } from '../types';
 
 export function renderHeader(): HTMLElement {
   const header = document.createElement('header');
   header.className = 'site-header';
   header.innerHTML = `
+    <a class="skip-link" href="#page-content">Skip to content</a>
     <div class="header-inner">
       <a href="/" class="logo" data-nav="home">
         <span class="logo-mark" aria-hidden="true">
@@ -28,13 +30,30 @@ export function renderHeader(): HTMLElement {
           <line x1="3" y1="6" x2="21" y2="6"/>
           <path d="M16 10a4 4 0 0 1-8 0"/>
         </svg>
-        <span class="cart-badge" id="cart-badge" style="display:none;">0</span>
+        <span class="cart-badge" id="cart-badge" hidden>0</span>
       </button>
     </div>
   `;
 
   const toggle = header.querySelector('.mobile-menu-toggle')!;
   const nav = header.querySelector('.main-nav')!;
+
+  function setActiveNav(page: PageName): void {
+    header.querySelectorAll<HTMLElement>('[data-nav]').forEach(link => {
+      const target = link.dataset.nav;
+      if (target === page || (page === 'product' && target === 'collection')) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  }
+
+  document.addEventListener('page-rendered', (event) => {
+    const page = (event as CustomEvent<{ page?: PageName }>).detail?.page;
+    if (page) setActiveNav(page);
+  });
+
   toggle.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('open');
     toggle.setAttribute('aria-expanded', String(isOpen));
@@ -48,9 +67,9 @@ export function renderHeader(): HTMLElement {
     if (!badge) return;
     if (count > 0) {
       badge.textContent = String(count);
-      badge.style.display = 'flex';
+      badge.hidden = false;
     } else {
-      badge.style.display = 'none';
+      badge.hidden = true;
     }
   }
 

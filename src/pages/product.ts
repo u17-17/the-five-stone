@@ -2,6 +2,7 @@ import type { PageComponent } from '../types';
 import { getPageParams } from '../router';
 import { addToCart } from '../cart';
 import { analyticsEvents, trackEvent } from '../lib/analytics';
+import { NEW_CUSTOMER_DISCOUNT, PRODUCT_ORIGINAL_PRICE, PRODUCT_PRICE } from '../siteConfig';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -88,9 +89,9 @@ const STONE_COLORS: StoneColor[] = [
     hex: '#c0392b',
     subtitle: 'Passion / Courage / Life Force',
     description:
-      'Red jasper — the stone of vitality. A reminder that you are alive, capable, and made for more than mere existence.',
+      'Red Liuli glass — the color of vitality. A reminder that you are alive, capable, and made for more than mere existence.',
     longDescription:
-      'The Red Stone Necklace is a myth-inspired necklace for courage, momentum, and the return of life force. Its warm red tone gives this crystal necklace a grounded presence, making it feel powerful without becoming loud. Inspired by Eastern mythology jewelry and the image of fire sealed inside stone, Red is chosen by people entering a new chapter, protecting their energy, or remembering their own capacity to begin again. It is symbolic jewelry for days that ask for resolve and forward motion.',
+      'The Red Stone Necklace is a myth-inspired necklace for courage, momentum, and the return of life force. Its red Liuli glass carries a warm, luminous presence, making the piece feel powerful without becoming loud. Inspired by Eastern mythology jewelry and the image of fire sealed inside stone, Red is chosen by people entering a new chapter, protecting their energy, or remembering their own capacity to begin again. It is symbolic jewelry for days that ask for resolve and forward motion.',
     gradient: 'linear-gradient(135deg, #c0392b, #e74c3c, #c0392b)',
     image: productAsset('red-main.webp'),
     images: {
@@ -106,9 +107,9 @@ const STONE_COLORS: StoneColor[] = [
     hex: '#27ae60',
     subtitle: 'Healing / Renewal / Growth',
     description:
-      'Green aventurine — the stone of renewal. A reminder that healing is not linear, and every ending holds a new beginning.',
+      'Green peridot — the stone of renewal. A reminder that healing is not linear, and every ending holds a new beginning.',
     longDescription:
-      'The Green Stone Necklace is designed around renewal, patience, and the slow intelligence of healing. As a symbolic crystal necklace, it carries a softer kind of strength: the kind that returns quietly after a difficult season. Green connects the collection to growth in nature and to Eastern mythology jewelry traditions where color often holds emotional meaning. Wear it as a myth-inspired necklace for restoration, gentleness, and the belief that what has been cracked can still become fertile again with trust.',
+      'The Green Stone Necklace is designed around renewal, patience, and the slow intelligence of healing. Its certified peridot material carries a softer kind of strength: the kind that returns quietly after a difficult season. Green connects the collection to growth in nature and to Eastern mythology jewelry traditions where color often holds emotional meaning. Wear it as a myth-inspired necklace for restoration, gentleness, and the belief that what has been cracked can still become fertile again with trust.',
     gradient: 'linear-gradient(135deg, #27ae60, #2ecc71, #27ae60)',
     image: productAsset('green-main.webp'),
     images: {
@@ -124,9 +125,9 @@ const STONE_COLORS: StoneColor[] = [
     hex: '#2980b9',
     subtitle: 'Clarity / Peace / Inner Balance',
     description:
-      'Blue lace agate — the stone of serenity. A reminder to breathe, to still the mind, and to trust the quiet voice within.',
+      'Blue labradorite — the stone of inner light. A reminder to breathe, to still the mind, and to trust the quiet voice within.',
     longDescription:
-      'The Blue Stone Necklace is made for clarity, inner quiet, and the space between reaction and response. Its cool tone gives this crystal necklace a calm visual rhythm, while the story behind it keeps the piece emotionally anchored. Blue is for the wearer who wants symbolic jewelry that feels thoughtful, steady, and easy to return to during a crowded day. As a myth-inspired necklace shaped by Eastern mythology jewelry, it suggests still water, open sky, and the protection of a clear mind.',
+      'The Blue Stone Necklace is made for clarity, inner quiet, and the space between reaction and response. Its certified labradorite material gives this crystal necklace a calm visual rhythm, while the story behind it keeps the piece emotionally anchored. Blue is for the wearer who wants symbolic jewelry that feels thoughtful, steady, and easy to return to during a crowded day. As a myth-inspired necklace shaped by Eastern mythology jewelry, it suggests still water, open sky, and the protection of a clear mind.',
     gradient: 'linear-gradient(135deg, #2980b9, #3498db, #2980b9)',
     image: productAsset('blue-main.webp'),
     images: {
@@ -142,9 +143,9 @@ const STONE_COLORS: StoneColor[] = [
     hex: '#e8e0d8',
     subtitle: 'Protection / Purity / Light',
     description:
-      'White moonstone — the stone of protection. A reminder that you are held, guided, and never truly alone.',
+      'White crystal — the stone of protection. A reminder that you are held, guided, and never truly alone.',
     longDescription:
-      'The White Stone Necklace is the collection’s clearest protection necklace, made for those who want a piece that feels luminous, gentle, and close. Its pale stone gives the crystal necklace a quiet ritual quality, like light held in a small object. Inspired by Eastern mythology jewelry and the final stone left behind after the sky was repaired, White represents shelter, purity, and emotional steadiness. It is symbolic jewelry for travel, transition, gifting, and moments when softness itself becomes a form of strength.',
+      'The White Stone Necklace is the collection’s clearest protection necklace, made for those who want a piece that feels luminous, gentle, and close. Its certified white crystal gives the necklace a quiet ritual quality, like light held in a small object. Inspired by Eastern mythology jewelry and the final stone left behind after the sky was repaired, White represents shelter, purity, and emotional steadiness. It is symbolic jewelry for travel, transition, gifting, and moments when softness itself becomes a form of strength.',
     gradient: 'linear-gradient(135deg, #e8e0d8, #f5f0eb, #d4ccc4)',
     image: productAsset('white-main.webp'),
     images: {
@@ -162,7 +163,7 @@ const STONE_COLORS: StoneColor[] = [
     description:
       'Black obsidian — the stone of truth. A reminder to look within, to shed what no longer serves, and to stand in your power.',
     longDescription:
-      'The Black Stone Necklace is a myth-inspired necklace for intuition, boundaries, and quiet inner strength. Its deep tone brings a more mysterious energy to the crystal necklace collection, pairing easily with daily clothing while carrying a private symbolic weight. Black is chosen by wearers who want protection without ornament that feels obvious, and meaning without explanation. Rooted in Eastern mythology jewelry and the image of a stone that remained after repair, it becomes symbolic jewelry for truth, resilience, and self-possession.',
+      'The Black Stone Necklace is a myth-inspired necklace for intuition, boundaries, and quiet inner strength. Its certified black obsidian brings a more mysterious energy to the crystal necklace collection, pairing easily with daily clothing while carrying a private symbolic weight. Black is chosen by wearers who want protection without ornament that feels obvious, and meaning without explanation. Rooted in Eastern mythology jewelry and the image of a stone that remained after repair, it becomes symbolic jewelry for truth, resilience, and self-possession.',
     gradient: 'linear-gradient(135deg, #2c2c2c, #4a4a4a, #2c2c2c)',
     image: productAsset('black-main.webp'),
     images: {
@@ -210,7 +211,7 @@ const REVIEWS: ReviewData[] = [
 const FAQS: FAQData[] = [
   {
     q: 'What is the chain made of?',
-    a: 'Each necklace features a 14k gold-filled or sterling silver chain (your choice), measuring 18 inches with a 2-inch extender for adjustable length. Gold-filled is 100x thicker than standard gold plating, ensuring lasting wear without tarnish.',
+    a: 'Each necklace uses a silver-wrapped copper chain with a professional hot-stamping finish designed to resist fading and peeling. Each piece is finished by hand.',
   },
   {
     q: 'Can I wear it in water?',
@@ -222,27 +223,27 @@ const FAQS: FAQData[] = [
   },
   {
     q: 'Is this a real gemstone?',
-    a: 'Yes. Each stone is a genuine semi-precious gemstone, hand-selected for its color and character. No two stones are exactly alike, which means your necklace is truly one of a kind.',
+    a: 'Each color uses certified material: black obsidian, white crystal, red Liuli glass, blue labradorite, and green peridot. Natural color and texture may vary slightly from piece to piece.',
   },
   {
     q: 'What is the return policy?',
-    a: 'We offer free returns within 30 days of delivery. The necklace must be unworn and in its original packaging. We believe in the Fifth Stone — but if it isn\'t yours, we\'ll make it right.',
+    a: 'We accept 14-day no-reason returns or exchanges. Return shipping is paid by the customer and is currently $10. If a product issue appears within one month after purchase, contact customer support for replacement help.',
   },
 ];
 
 const SELLING_POINTS = [
-  '14k gold-filled or sterling silver',
-  'Hand-selected genuine gemstone',
-  '18" chain with 2" extender',
-  'Arrives in a keepsake box',
-  'Free shipping worldwide',
+  `New customer price: $${PRODUCT_PRICE}.00`,
+  `Original price: $${PRODUCT_ORIGINAL_PRICE}.00`,
+  'Free shipping from China',
+  'Certified stone materials',
+  'Handmade silver-wrapped copper chain',
 ];
 
 const TRUST_BADGES = [
-  { label: 'Secure checkout with PayPal', href: '/policies/privacy-policy' },
-  { label: 'Tracked international shipping', href: '/policies/shipping-policy' },
-  { label: 'Clear return policy', href: '/policies/refund-policy' },
-  { label: 'Support contact available', href: '/contact' },
+  { label: 'Ships from China', href: '/policies/shipping-policy' },
+  { label: 'Free shipping today', href: '/policies/shipping-policy' },
+  { label: '14-day returns, $10 return shipping', href: '/policies/refund-policy' },
+  { label: 'One-month replacement support', href: '/contact' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -368,6 +369,18 @@ const ProductPage: PageComponent = {
     const heroSection = document.createElement('section');
     heroSection.className = 'product-hero';
 
+    const offerBanner = document.createElement('div');
+    offerBanner.className = 'product-offer-banner';
+    offerBanner.innerHTML = `
+      <span class="product-offer-kicker">New customer offer</span>
+      <span class="product-offer-copy">
+        $${NEW_CUSTOMER_DISCOUNT}.00 off your first order + free shipping from China.
+      </span>
+      <span class="product-offer-price">
+        Order today for <strong>$${PRODUCT_PRICE}.00</strong>
+      </span>
+    `;
+
     const heroInner = document.createElement('div');
     heroInner.className = 'product-hero-inner';
 
@@ -405,11 +418,14 @@ const ProductPage: PageComponent = {
     const productSubtitle = document.createElement('p');
     productSubtitle.className = 'product-subtitle';
     productSubtitle.textContent =
-      'A semi-precious gemstone on a 14k gold-filled or sterling silver chain.';
+      'A certified symbolic pendant on a handmade silver-wrapped copper chain.';
 
     const priceEl = document.createElement('p');
     priceEl.className = 'product-price';
-    priceEl.textContent = '$49.00';
+    priceEl.innerHTML = `
+      <span class="product-price-current">$${PRODUCT_PRICE}.00</span>
+      <span class="product-price-original">$${PRODUCT_ORIGINAL_PRICE}.00 original</span>
+    `;
 
     const divider = document.createElement('hr');
     divider.className = 'product-divider';
@@ -494,6 +510,7 @@ const ProductPage: PageComponent = {
 
     heroInner.appendChild(heroImages);
     heroInner.appendChild(heroInfo);
+    heroSection.appendChild(offerBanner);
     heroSection.appendChild(heroInner);
     page.appendChild(heroSection);
 
@@ -626,16 +643,16 @@ const ProductPage: PageComponent = {
       {
         label: 'Stone',
         value:
-          'Semi-precious gemstone, hand-selected for color and character. No two are alike.',
+          'Certified materials by color: black obsidian, white crystal, red Liuli glass, blue labradorite, and green peridot.',
       },
       {
         label: 'Chain',
         value:
-          '14k gold-filled or sterling silver. 18" with 2" extender. Hypoallergenic and nickel-free.',
+          'Silver-wrapped copper chain finished with a professional hot-stamping process to help resist fading and peeling.',
       },
       {
-        label: 'Clasp',
-        value: 'Lobster claw closure with custom Fifth Stone tag.',
+        label: 'Craft',
+        value: 'Pure handmade assembly with careful finishing, polishing, and inspection before shipping.',
       },
       {
         label: 'Packaging',
@@ -644,12 +661,12 @@ const ProductPage: PageComponent = {
       {
         label: 'Dimensions',
         value:
-          'Stone: approx. 10mm. Pendant drop: approx. 1.5". Chain: 18"–20" adjustable.',
+          'Pendant length: approx. 3-4 cm. Chain: adjustable for daily wear.',
       },
       {
-        label: 'Care',
+        label: 'After-Sales',
         value:
-          'Avoid water, lotions, and perfumes. Wipe with a soft cloth. Store in the provided box.',
+          '14-day no-reason returns or exchanges. Customer pays $10 return shipping. Product issues within one month may be eligible for replacement support.',
       },
     ];
 
@@ -727,17 +744,17 @@ const ProductPage: PageComponent = {
     boxList.className = 'box-list';
 
     const BOX_ITEMS = [
-      { icon: '✦', text: 'The Fifth Stone Necklace — your chosen color' },
-      { icon: '✦', text: 'Linen-lined keepsake box with magnetic closure' },
-      { icon: '✦', text: 'Handwritten-style story card explaining the Fifth Stone' },
-      { icon: '✦', text: 'Care guide with cleaning cloth' },
-      { icon: '✦', text: 'Gold foil sticker set (bonus)' },
+      'The Fifth Stone Necklace — your chosen color',
+      'Linen-lined keepsake box with magnetic closure',
+      'Handwritten-style story card explaining the Fifth Stone',
+      'Care guide with cleaning cloth',
+      'Foil sticker set (bonus)',
     ];
 
     for (const item of BOX_ITEMS) {
       const el = document.createElement('div');
       el.className = 'box-item';
-      el.innerHTML = `<span class="box-icon">${item.icon}</span><span>${item.text}</span>`;
+      el.innerHTML = `<span class="box-icon" aria-hidden="true"></span><span>${item}</span>`;
       boxList.appendChild(el);
     }
 
@@ -764,7 +781,7 @@ const ProductPage: PageComponent = {
 
       const stars = document.createElement('div');
       stars.className = 'review-stars';
-      stars.textContent = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+      stars.textContent = `Rated ${r.rating}.0 / 5`;
 
       const text = document.createElement('p');
       text.className = 'review-text';
@@ -846,7 +863,7 @@ const ProductPage: PageComponent = {
     const ctaText = document.createElement('p');
     ctaText.className = 'section-subtitle';
     ctaText.textContent =
-      'Every stone has a meaning. Which one speaks to you?';
+      `Every stone has a meaning. New customers can order today for $${PRODUCT_PRICE}.00 with free shipping.`;
 
     const ctaBtn = document.createElement('button');
     ctaBtn.className = 'btn product-cta-btn';
@@ -877,7 +894,7 @@ const ProductPage: PageComponent = {
 
     const stickyPrice = document.createElement('span');
     stickyPrice.className = 'sticky-price';
-    stickyPrice.textContent = '$49.00';
+    stickyPrice.textContent = `$${PRODUCT_PRICE}.00`;
 
     const stickyBtn = document.createElement('button');
     stickyBtn.className = 'btn sticky-cart-btn';
@@ -900,10 +917,10 @@ const ProductPage: PageComponent = {
           colorId: color.id,
           colorName: color.name,
           image: color.image,
-          price: 49,
+          price: PRODUCT_PRICE,
         });
         const original = btn.textContent;
-        btn.textContent = 'Added ✓';
+        btn.textContent = 'Added to Cart';
         btn.disabled = true;
         setTimeout(() => {
           btn.textContent = original;
@@ -927,7 +944,7 @@ const ProductPage: PageComponent = {
         colorId: color.id,
         colorName: color.name,
         image: color.image,
-        price: 49,
+        price: PRODUCT_PRICE,
       });
       window.dispatchEvent(new CustomEvent('toggle-cart'));
     });

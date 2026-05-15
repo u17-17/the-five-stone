@@ -1,6 +1,7 @@
 import './style.css';
 import { initRouter } from './router';
 import { getCart, removeFromCart, updateQuantity } from './cart';
+import { SUPPORT_EMAIL } from './siteConfig';
 import { initAnalytics } from './lib/analytics';
 
 function initApp() {
@@ -39,6 +40,7 @@ function initApp() {
         <span id="cart-total-price">$0.00</span>
       </div>
       <button class="btn cart-checkout-btn" id="cart-checkout-btn">Checkout</button>
+      <p class="cart-checkout-note" id="cart-checkout-note" hidden></p>
     </div>
   `;
 
@@ -47,6 +49,7 @@ function initApp() {
 
   const itemsContainer = drawer.querySelector('#cart-items')!;
   const totalPriceEl = drawer.querySelector('#cart-total-price')!;
+  const checkoutNote = drawer.querySelector('#cart-checkout-note') as HTMLElement | null;
 
   function renderCartItem(item: ReturnType<typeof getCart>[number]): HTMLElement {
     const el = document.createElement('div');
@@ -71,7 +74,7 @@ function initApp() {
   function refreshCart(): void {
     const items = getCart();
     if (items.length === 0) {
-      itemsContainer.innerHTML = '<div class="cart-empty"><p>Your cart is empty.</p><p style="margin-top:8px;font-size:0.85rem;">Choose a stone that speaks to you.</p></div>';
+      itemsContainer.innerHTML = '<div class="cart-empty"><p>Your cart is empty.</p><p class="cart-empty-subtext">Choose a stone that speaks to you.</p></div>';
       totalPriceEl.textContent = '$0.00';
       return;
     }
@@ -122,7 +125,10 @@ function initApp() {
   });
 
   drawer.querySelector('#cart-checkout-btn')?.addEventListener('click', () => {
-    alert('Thank you! Checkout will be available soon.');
+    if (!checkoutNote) return;
+    checkoutNote.hidden = false;
+    checkoutNote.textContent =
+      `Checkout is being connected. For order help, contact ${SUPPORT_EMAIL}.`;
   });
 }
 

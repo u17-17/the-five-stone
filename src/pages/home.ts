@@ -97,7 +97,7 @@ const HomePage: PageComponent = {
             <img src="/brand-logo-mark.webp" alt="" width="555" height="540" decoding="async">
           </div>
           <p class="hero-brand-slogan">THE FIFTH STONE</p>
-          <h1 id="hero-title" class="hero-title">Wear the Stone<br>That Mends the Sky.</h1>
+          <h1 id="hero-title" class="hero-title">Wear the Stone <br>That Mends the Sky.</h1>
           <div class="hero-rule" aria-hidden="true"></div>
           <p class="hero-tagline">Five sacred stones. One ancient promise.</p>
           <p class="hero-desc">Inspired by the legend of Nüwa, crafted for the journey within.</p>
@@ -125,7 +125,7 @@ const HomePage: PageComponent = {
             <p class="story-signoff">This is the story of The Fifth Stone.</p>
             <button class="story-link" data-action="story">
               <span>Read the Full Myth</span>
-              <span aria-hidden="true">→</span>
+              <span class="story-link-mark" aria-hidden="true"></span>
             </button>
           </div>
         </div>
@@ -218,6 +218,7 @@ const HomePage: PageComponent = {
             <input type="email" class="signup-input" placeholder="Enter your email" required aria-label="Email address">
             <button type="submit" class="btn signup-btn">Enter the Circle</button>
           </form>
+          <p class="signup-status" role="status" aria-live="polite"></p>
           <p class="signup-note">Join a growing circle of stone seekers.</p>
         </div>
       </section>
@@ -281,18 +282,26 @@ const HomePage: PageComponent = {
     form?.addEventListener('submit', (e) => {
       e.preventDefault();
       const input = form.querySelector('.signup-input') as HTMLInputElement;
-      if (input.value && input.value.includes('@')) {
-        trackEvent(analyticsEvents.newsletterSubmit, { source: 'home_signup' });
-        // TODO: Integrate with backend email subscription service
-        const btn = form.querySelector('.signup-btn') as HTMLButtonElement;
-        btn.textContent = 'Thank you!';
-        btn.disabled = true;
-        input.value = '';
-        setTimeout(() => {
-          btn.textContent = 'Enter the Circle';
-          btn.disabled = false;
-        }, 3000);
+      const status = page.querySelector('.signup-status') as HTMLElement | null;
+      const btn = form.querySelector('.signup-btn') as HTMLButtonElement;
+      const email = input.value.trim();
+      if (!input.checkValidity() || !email.includes('@')) {
+        if (status) status.textContent = 'Please enter a valid email address.';
+        input.focus();
+        return;
       }
+      trackEvent(analyticsEvents.newsletterSubmit, { source: 'home_signup' });
+      if (status) {
+        status.textContent =
+          'Thank you. Email subscription will be connected with the backend soon.';
+      }
+      btn.textContent = 'Joined';
+      btn.disabled = true;
+      input.value = '';
+      setTimeout(() => {
+        btn.textContent = 'Enter the Circle';
+        btn.disabled = false;
+      }, 3000);
     });
 
     const params = getPageParams();

@@ -1,3 +1,5 @@
+import { PRODUCT_PRICE } from './siteConfig';
+
 export interface CartItem {
   colorId: string;
   colorName: string;
@@ -7,7 +9,6 @@ export interface CartItem {
 }
 
 const STORAGE_KEY = 'fifth-stone-cart';
-const DEFAULT_PRICE = 49;
 
 function normalizeCartItem(item: Partial<CartItem>): CartItem | null {
   if (!item.colorId || !item.colorName || !item.image) return null;
@@ -16,7 +17,7 @@ function normalizeCartItem(item: Partial<CartItem>): CartItem | null {
     colorId: item.colorId,
     colorName: item.colorName,
     image: item.image,
-    price: typeof item.price === 'number' && Number.isFinite(item.price) ? item.price : DEFAULT_PRICE,
+    price: PRODUCT_PRICE,
     quantity:
       typeof item.quantity === 'number' && Number.isFinite(item.quantity) && item.quantity > 0
         ? item.quantity

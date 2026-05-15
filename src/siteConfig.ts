@@ -1,0 +1,5 @@
+export const SUPPORT_EMAIL = 's2898656752@gmail.com';
+
+export const PRODUCT_ORIGINAL_PRICE = 168;
+export const PRODUCT_PRICE = 158;
+export const NEW_CUSTOMER_DISCOUNT = PRODUCT_ORIGINAL_PRICE - PRODUCT_PRICE;

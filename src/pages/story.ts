@@ -21,7 +21,7 @@ const StoryPage: PageComponent = {
     style.textContent = `
       /* Hero */
       .story-hero {
-        min-height: 100vh;
+        min-height: 100dvh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -111,7 +111,7 @@ const StoryPage: PageComponent = {
 
       .story-myth-screen {
         max-width: 100%;
-        min-height: 100vh;
+        min-height: 100dvh;
         display: flex;
         align-items: center;
         background:
@@ -156,7 +156,7 @@ const StoryPage: PageComponent = {
 
       .story-fifth-screen {
         max-width: 100%;
-        min-height: 100vh;
+        min-height: 100dvh;
         display: flex;
         align-items: center;
         background:
@@ -356,9 +356,23 @@ const StoryPage: PageComponent = {
       }
 
       .story-transformation-arrow {
-        font-size: 1.5rem;
-        color: var(--color-muted-gold);
+        width: 44px;
+        height: 1px;
+        background: var(--color-muted-gold);
         flex-shrink: 0;
+        position: relative;
+      }
+
+      .story-transformation-arrow::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 8px;
+        height: 8px;
+        border-right: 1px solid var(--color-muted-gold);
+        border-top: 1px solid var(--color-muted-gold);
+        transform: translateY(-50%) rotate(45deg);
       }
 
       /* Five colors grid */
@@ -740,7 +754,7 @@ const StoryPage: PageComponent = {
           <h4>Ancient Myth</h4>
           <p>The legend of Nuwa mending the sky with five sacred stones.</p>
         </div>
-        <div class="story-transformation-arrow">&rarr;</div>
+        <div class="story-transformation-arrow" aria-hidden="true"></div>
         <div class="story-transformation-step">
           <div class="story-transformation-icon" aria-hidden="true">
             <svg class="story-icon-svg" viewBox="0 0 40 40">
@@ -754,7 +768,7 @@ const StoryPage: PageComponent = {
           <h4>Sacred Symbol</h4>
           <p>The fifth stone becomes a symbol of resilience and repair.</p>
         </div>
-        <div class="story-transformation-arrow">&rarr;</div>
+        <div class="story-transformation-arrow" aria-hidden="true"></div>
         <div class="story-transformation-step">
           <div class="story-transformation-icon" aria-hidden="true">
             <svg class="story-icon-svg" viewBox="0 0 40 40">

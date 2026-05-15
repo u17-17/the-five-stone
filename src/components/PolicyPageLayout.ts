@@ -1,6 +1,6 @@
 import { navigateTo } from '../router';
 import type { PolicyBlock, PolicyPageContent, PolicySection } from '../data/policyContent';
-import { SUPPORT_EMAIL } from '../data/policyContent';
+import { SUPPORT_EMAIL } from '../siteConfig';
 import { analyticsEvents, trackEvent } from '../lib/analytics';
 
 function escapeHtml(value: string): string {
