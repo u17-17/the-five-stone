@@ -1,5 +1,7 @@
 node_modules
 dist
 *.log
+.codex-vercel-cli-patch.cjs
+.env*.local
 改/
 public/产品展示图/
