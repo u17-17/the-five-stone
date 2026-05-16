@@ -57,6 +57,10 @@ function renderContactForm(): string {
         <span>Order Number <em>optional</em></span>
         <input type="text" name="orderNumber" autocomplete="off">
       </label>
+      <label class="policy-honeypot" aria-hidden="true">
+        <span>Website</span>
+        <input type="text" name="website" tabindex="-1" autocomplete="off">
+      </label>
       <label>
         <span>Message</span>
         <textarea name="message" rows="6" required></textarea>
@@ -93,7 +97,7 @@ export function renderPolicyPageLayout(content: PolicyPageContent): HTMLElement 
   `;
 
   const contactForm = page.querySelector<HTMLFormElement>('.policy-contact-form');
-  contactForm?.addEventListener('submit', (event) => {
+  contactForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     if (!contactForm.checkValidity()) {
@@ -104,11 +108,58 @@ export function renderPolicyPageLayout(content: PolicyPageContent): HTMLElement 
     trackEvent(analyticsEvents.contactClick, { source: 'contact_form' });
 
     const status = contactForm.querySelector<HTMLElement>('.policy-form-status');
+    const submitButton = contactForm.querySelector<HTMLButtonElement>('.policy-submit-btn');
+    const formData = new FormData(contactForm);
+    const payload = {
+      name: String(formData.get('name') || ''),
+      email: String(formData.get('email') || ''),
+      orderNumber: String(formData.get('orderNumber') || ''),
+      message: String(formData.get('message') || ''),
+      website: String(formData.get('website') || ''),
+    };
+    const originalText = submitButton?.textContent || 'Send Message';
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+    }
     if (status) {
       status.hidden = false;
-      status.textContent = `Thank you for your message. Please email us directly at ${SUPPORT_EMAIL} while our contact system is being finalized.`;
+      status.textContent = '';
+      status.removeAttribute('data-state');
     }
-    contactForm.reset();
+
+    try {
+      const response = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = (await response.json().catch(() => ({}))) as { error?: string };
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Unable to send your message right now.');
+      }
+
+      if (status) {
+        status.dataset.state = 'success';
+        status.textContent = 'Thank you. Your message has been sent.';
+      }
+      contactForm.reset();
+    } catch (error) {
+      if (status) {
+        status.dataset.state = 'error';
+        status.textContent =
+          error instanceof Error
+            ? `${error.message} Please email us directly at ${SUPPORT_EMAIL}.`
+            : `Unable to send your message right now. Please email us directly at ${SUPPORT_EMAIL}.`;
+      }
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+      }
+    }
   });
 
   page.querySelectorAll<HTMLAnchorElement>('.policy-email-link').forEach(link => {
