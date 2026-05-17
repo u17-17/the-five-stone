@@ -28,6 +28,70 @@
   ],
   "rewrites": [
     {
+      "source": "/story",
+      "destination": "/story/index.html"
+    },
+    {
+      "source": "/story/",
+      "destination": "/story/index.html"
+    },
+    {
+      "source": "/collection",
+      "destination": "/collection/index.html"
+    },
+    {
+      "source": "/collection/",
+      "destination": "/collection/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/contact/",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq/index.html"
+    },
+    {
+      "source": "/faq/",
+      "destination": "/faq/index.html"
+    },
+    {
+      "source": "/policies/shipping-policy",
+      "destination": "/policies/shipping-policy/index.html"
+    },
+    {
+      "source": "/policies/shipping-policy/",
+      "destination": "/policies/shipping-policy/index.html"
+    },
+    {
+      "source": "/policies/refund-policy",
+      "destination": "/policies/refund-policy/index.html"
+    },
+    {
+      "source": "/policies/refund-policy/",
+      "destination": "/policies/refund-policy/index.html"
+    },
+    {
+      "source": "/policies/privacy-policy",
+      "destination": "/policies/privacy-policy/index.html"
+    },
+    {
+      "source": "/policies/privacy-policy/",
+      "destination": "/policies/privacy-policy/index.html"
+    },
+    {
+      "source": "/policies/terms-of-service",
+      "destination": "/policies/terms-of-service/index.html"
+    },
+    {
+      "source": "/policies/terms-of-service/",
+      "destination": "/policies/terms-of-service/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

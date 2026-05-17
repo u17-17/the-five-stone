@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "test:countdown": "node --experimental-strip-types --test tests/countdown.test.ts",
-    "build": "tsc && vite build",
+    "test:prerender": "node --test tests/prerender.test.mjs",
+    "test": "npm run test:countdown && npm run test:prerender",
+    "build": "tsc && vite build && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "devDependencies": {
