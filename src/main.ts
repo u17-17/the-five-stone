@@ -1,7 +1,7 @@
 import './style.css';
 import { initRouter } from './router';
 import { getCart, removeFromCart, updateQuantity } from './cart';
-import { SUPPORT_EMAIL } from './siteConfig';
+import { PAIR_BUNDLE_PRICE, PAIR_BUNDLE_SIZE, PRODUCT_PRICE, SUPPORT_EMAIL } from './siteConfig';
 import { initAnalytics } from './lib/analytics';
 
 function initApp() {
@@ -35,9 +35,15 @@ function initApp() {
     </div>
     <div class="cart-drawer-items" id="cart-items"></div>
     <div class="cart-drawer-footer">
-      <div class="cart-total">
-        <span>Total</span>
-        <span id="cart-total-price">$0.00</span>
+      <div class="cart-summary-card" aria-label="Cart summary">
+        <div class="cart-pair-promo" id="cart-pair-promo" role="status" aria-live="polite"></div>
+        <div class="cart-total">
+          <span class="cart-total-label">
+            <span id="cart-total-title">Cart subtotal</span>
+            <small id="cart-total-note">Before checkout confirmation</small>
+          </span>
+          <strong id="cart-total-price">$0.00</strong>
+        </div>
       </div>
       <button class="btn cart-checkout-btn" id="cart-checkout-btn">Checkout</button>
       <p class="cart-checkout-note" id="cart-checkout-note" hidden></p>
@@ -49,6 +55,9 @@ function initApp() {
 
   const itemsContainer = drawer.querySelector('#cart-items')!;
   const totalPriceEl = drawer.querySelector('#cart-total-price')!;
+  const totalTitleEl = drawer.querySelector('#cart-total-title') as HTMLElement | null;
+  const totalNoteEl = drawer.querySelector('#cart-total-note') as HTMLElement | null;
+  const pairPromoEl = drawer.querySelector('#cart-pair-promo') as HTMLElement | null;
   const checkoutNote = drawer.querySelector('#cart-checkout-note') as HTMLElement | null;
 
   function renderCartItem(item: ReturnType<typeof getCart>[number]): HTMLElement {
@@ -73,8 +82,26 @@ function initApp() {
 
   function refreshCart(): void {
     const items = getCart();
+    const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+    const pairCount = Math.floor(itemCount / PAIR_BUNDLE_SIZE);
+    const pairDiscount = (PRODUCT_PRICE * PAIR_BUNDLE_SIZE) - PAIR_BUNDLE_PRICE;
+    if (pairPromoEl) {
+      pairPromoEl.classList.toggle('unlocked', itemCount >= PAIR_BUNDLE_SIZE);
+      if (itemCount === 0) {
+        pairPromoEl.textContent =
+          `Choose any ${PAIR_BUNDLE_SIZE} stones to unlock the $${PAIR_BUNDLE_PRICE}.00 pair offer.`;
+      } else if (itemCount < PAIR_BUNDLE_SIZE) {
+        pairPromoEl.textContent =
+          `Add ${PAIR_BUNDLE_SIZE - itemCount} more stone to unlock the $${PAIR_BUNDLE_PRICE}.00 pair offer.`;
+      } else {
+        pairPromoEl.textContent =
+          `Pair offer ready: any ${PAIR_BUNDLE_SIZE} stones for $${PAIR_BUNDLE_PRICE}.00. Checkout pricing is being connected.`;
+      }
+    }
     if (items.length === 0) {
       itemsContainer.innerHTML = '<div class="cart-empty"><p>Your cart is empty.</p><p class="cart-empty-subtext">Choose a stone that speaks to you.</p></div>';
+      if (totalTitleEl) totalTitleEl.textContent = 'Cart subtotal';
+      if (totalNoteEl) totalNoteEl.textContent = 'Before checkout confirmation';
       totalPriceEl.textContent = '$0.00';
       return;
     }
@@ -84,7 +111,19 @@ function initApp() {
       total += item.price * item.quantity;
       itemsContainer.appendChild(renderCartItem(item));
     }
-    totalPriceEl.textContent = `$${total.toFixed(2)}`;
+    if (pairCount > 0) {
+      const estimatedOfferTotal = total - (pairDiscount * pairCount);
+      if (totalTitleEl) totalTitleEl.textContent = 'Estimated pair subtotal';
+      if (totalNoteEl) totalNoteEl.textContent = 'Offer shown before checkout confirmation';
+      totalPriceEl.innerHTML = `
+        <span class="cart-total-original">$${total.toFixed(2)}</span>
+        <span class="cart-total-offer">$${estimatedOfferTotal.toFixed(2)}</span>
+      `;
+    } else {
+      if (totalTitleEl) totalTitleEl.textContent = 'Cart subtotal';
+      if (totalNoteEl) totalNoteEl.textContent = 'Before checkout confirmation';
+      totalPriceEl.textContent = `$${total.toFixed(2)}`;
+    }
   }
 
   function openCart(): void {

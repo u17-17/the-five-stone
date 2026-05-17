@@ -3,3 +3,7 @@ export const SUPPORT_EMAIL = 's2898656752@gmail.com';
 export const PRODUCT_ORIGINAL_PRICE = 168;
 export const PRODUCT_PRICE = 158;
 export const NEW_CUSTOMER_DISCOUNT = PRODUCT_ORIGINAL_PRICE - PRODUCT_PRICE;
+
+export const PAIR_BUNDLE_SIZE = 2;
+export const PAIR_BUNDLE_PRICE = 298;
+export const PAIR_CAMPAIGN_END_AT = '2026-05-31T23:59:59+08:00';

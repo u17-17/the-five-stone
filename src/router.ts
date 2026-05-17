@@ -6,6 +6,8 @@ type PageParams = Record<string, string>;
 
 const SITE_URL = 'https://fifth-stone.cn';
 const BRAND_NAME = 'The Fifth Stone';
+const DEFAULT_SEO_IMAGE = '/hero-carousel/hero-1.webp';
+const DEFAULT_SEO_IMAGE_ALT = 'The Fifth Stone myth-inspired crystal necklace collection';
 
 const routes: Record<PageName, () => Promise<PageComponent>> = {
   home: () => import('./pages/home').then(m => m.default),
@@ -25,7 +27,9 @@ let currentPage: PageComponent | null = null;
 const DEFAULT_SEO: PageSeo = {
   title: 'The Fifth Stone | Myth-Inspired Crystal Necklaces',
   description:
-    'Discover myth-inspired crystal necklaces and symbolic jewelry from The Fifth Stone, created around Eastern mythology, protection, repair, and rebirth.',
+    'Shop myth-inspired crystal necklaces and symbolic jewelry from The Fifth Stone, created around Eastern mythology, protection, repair, and rebirth.',
+  image: DEFAULT_SEO_IMAGE,
+  imageAlt: DEFAULT_SEO_IMAGE_ALT,
 };
 
 const pageSeo: Partial<Record<PageName, PageSeo>> = {
@@ -34,18 +38,57 @@ const pageSeo: Partial<Record<PageName, PageSeo>> = {
     title: 'The Legend | The Fifth Stone',
     description:
       'Discover the Eastern myth behind The Fifth Stone, a symbolic jewelry story of repair, protection, and rebirth.',
+    image: '/home-story-carousel/story-teaser-1.webp',
+    imageAlt: 'The Fifth Stone myth-inspired story scene in a sunlit stone hall',
   },
   product: {
-    title: 'The Fifth Stone Collection | Symbolic Stone Necklaces',
+    title: 'The Fifth Stone Collection | Symbolic Crystal Necklaces',
     description:
-      'Explore The Fifth Stone symbolic necklaces in red, green, gold, white, and black, each inspired by the myth of mending the sky.',
+      'Explore The Fifth Stone symbolic crystal necklaces in red, green, gold, white, and black, each inspired by the myth of mending the sky.',
+    image: '/product-images/gold-worn.webp',
+    imageAlt: 'Gold Fifth Stone necklace worn as symbolic crystal jewelry',
   },
   collection: {
-    title: 'The Fifth Stone Collection | Symbolic Stone Necklaces',
+    title: 'The Fifth Stone Collection | Symbolic Crystal Necklaces',
     description:
-      'Explore The Fifth Stone symbolic necklaces in red, green, gold, white, and black, each inspired by the myth of mending the sky.',
+      'Explore The Fifth Stone symbolic crystal necklaces in red, green, gold, white, and black, each inspired by the myth of mending the sky.',
+    image: '/product-images/gold-worn.webp',
+    imageAlt: 'Gold Fifth Stone necklace worn as symbolic crystal jewelry',
   },
 };
+
+const collectionItems = [
+  {
+    name: 'Red Stone Necklace',
+    color: 'Red',
+    url: '/collection?color=red',
+    image: '/product-images/red-main.webp',
+  },
+  {
+    name: 'Green Stone Necklace',
+    color: 'Green',
+    url: '/collection?color=green',
+    image: '/product-images/green-main.webp',
+  },
+  {
+    name: 'Gold Stone Necklace',
+    color: 'Gold',
+    url: '/collection?color=gold',
+    image: '/product-images/gold-main.webp',
+  },
+  {
+    name: 'White Stone Necklace',
+    color: 'White',
+    url: '/collection?color=white',
+    image: '/product-images/white-main.webp',
+  },
+  {
+    name: 'Black Stone Necklace',
+    color: 'Black',
+    url: '/collection?color=black',
+    image: '/product-images/black-main.webp',
+  },
+];
 
 const pathRoutes: Record<string, PageName> = {
   '/story': 'story',
@@ -198,6 +241,11 @@ function absoluteUrl(path: string): string {
   return path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`;
 }
 
+function absoluteAssetUrl(path: string): string {
+  if (path.startsWith('http://') || path.startsWith('https://')) return path;
+  return `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
 function setCanonical(path: string): void {
   let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
   if (!canonical) {
@@ -304,6 +352,53 @@ function getProductSchema() {
       availability: 'https://schema.org/InStock',
       itemCondition: 'https://schema.org/NewCondition',
     },
+    hasVariant: collectionItems.map(item => ({
+      '@type': 'Product',
+      name: item.name,
+      color: item.color,
+      image: absoluteAssetUrl(item.image),
+      url: absoluteUrl(item.url),
+      brand: {
+        '@type': 'Brand',
+        name: BRAND_NAME,
+      },
+      offers: {
+        '@type': 'Offer',
+        url: absoluteUrl(item.url),
+        priceCurrency: 'USD',
+        price: `${PRODUCT_PRICE}.00`,
+        availability: 'https://schema.org/InStock',
+        itemCondition: 'https://schema.org/NewCondition',
+      },
+    })),
+  };
+}
+
+function getCollectionItemListSchema(page: PageName) {
+  const itemListElement = collectionItems.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'Product',
+      name: item.name,
+      color: item.color,
+      image: absoluteAssetUrl(item.image),
+      url: absoluteUrl(item.url),
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: 'USD',
+        price: `${PRODUCT_PRICE}.00`,
+        availability: 'https://schema.org/InStock',
+      },
+    },
+  }));
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': page === 'home' ? 'ItemList' : 'CollectionPage',
+    '@id': `${SITE_URL}${page === 'home' ? '/#stone-collection' : '/collection#stone-collection'}`,
+    name: 'The Fifth Stone symbolic crystal necklace collection',
+    itemListElement,
   };
 }
 
@@ -319,7 +414,9 @@ function applyStructuredData(page: PageName, canonicalPath: string): void {
   ];
 
   if (page === 'faq') schemas.push(getFaqSchema());
+  if (page === 'home') schemas.push(getCollectionItemListSchema(page));
   if (page === 'collection' || page === 'product') schemas.push(getProductSchema());
+  if (page === 'collection' || page === 'product') schemas.push(getCollectionItemListSchema(page));
 
   schemas.forEach((schema, index) => {
     const script = document.createElement('script');
@@ -333,6 +430,9 @@ function applyStructuredData(page: PageName, canonicalPath: string): void {
 function applySeo(page: PageName, seo?: PageSeo): void {
   const resolvedSeo = seo ?? pageSeo[page] ?? DEFAULT_SEO;
   const canonicalPath = canonicalPaths[page] ?? '/';
+  const canonicalUrl = absoluteUrl(canonicalPath);
+  const imageUrl = absoluteAssetUrl(resolvedSeo.image ?? DEFAULT_SEO_IMAGE);
+  const imageAlt = resolvedSeo.imageAlt ?? DEFAULT_SEO_IMAGE_ALT;
   document.title = resolvedSeo.title;
 
   let description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
@@ -342,8 +442,32 @@ function applySeo(page: PageName, seo?: PageSeo): void {
     document.head.appendChild(description);
   }
   description.content = resolvedSeo.description;
+
+  setMetaTag('property', 'og:type', page === 'home' ? 'website' : 'article');
+  setMetaTag('property', 'og:site_name', BRAND_NAME);
+  setMetaTag('property', 'og:title', resolvedSeo.title);
+  setMetaTag('property', 'og:description', resolvedSeo.description);
+  setMetaTag('property', 'og:url', canonicalUrl);
+  setMetaTag('property', 'og:image', imageUrl);
+  setMetaTag('property', 'og:image:alt', imageAlt);
+  setMetaTag('name', 'twitter:card', 'summary_large_image');
+  setMetaTag('name', 'twitter:title', resolvedSeo.title);
+  setMetaTag('name', 'twitter:description', resolvedSeo.description);
+  setMetaTag('name', 'twitter:image', imageUrl);
+  setMetaTag('name', 'twitter:image:alt', imageAlt);
+
   setCanonical(canonicalPath);
   applyStructuredData(page, canonicalPath);
+}
+
+function setMetaTag(attribute: 'name' | 'property', key: string, content: string): void {
+  let meta = document.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`);
+  if (!meta) {
+    meta = document.createElement('meta');
+    meta.setAttribute(attribute, key);
+    document.head.appendChild(meta);
+  }
+  meta.content = content;
 }
 
 export async function navigateTo(page: PageName, params?: PageParams) {

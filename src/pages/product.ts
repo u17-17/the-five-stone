@@ -2,7 +2,12 @@ import type { PageComponent } from '../types';
 import { getPageParams } from '../router';
 import { addToCart } from '../cart';
 import { analyticsEvents, trackEvent } from '../lib/analytics';
-import { NEW_CUSTOMER_DISCOUNT, PRODUCT_ORIGINAL_PRICE, PRODUCT_PRICE } from '../siteConfig';
+import {
+  NEW_CUSTOMER_DISCOUNT,
+  PAIR_BUNDLE_PRICE,
+  PRODUCT_ORIGINAL_PRICE,
+  PRODUCT_PRICE,
+} from '../siteConfig';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -345,9 +350,11 @@ function renderGalleryThumb(thumb: HTMLElement, color: StoneColor, viewIndex: nu
 // ---------------------------------------------------------------------------
 const ProductPage: PageComponent = {
   seo: {
-    title: 'The Fifth Stone Collection | Symbolic Stone Necklaces',
+    title: 'The Fifth Stone Collection | Symbolic Crystal Necklaces',
     description:
-      'Choose your Fifth Stone necklace in red, green, gold, white, or black, each carrying a symbolic meaning inspired by the myth of mending the sky.',
+      'Choose a symbolic Fifth Stone crystal necklace in red, green, gold, white, or black. Each piece includes certified materials, free shipping, and a $158 new customer price.',
+    image: '/product-images/gold-worn.webp',
+    imageAlt: 'Gold Fifth Stone necklace worn as myth-inspired symbolic jewelry',
   },
 
   render() {
@@ -470,6 +477,11 @@ const ProductPage: PageComponent = {
     btnGroup.appendChild(addToCartBtn);
     btnGroup.appendChild(buyNowBtn);
 
+    const pairOfferNote = document.createElement('p');
+    pairOfferNote.className = 'product-pair-offer-note';
+    pairOfferNote.textContent =
+      `Pair it with another stone for the $${PAIR_BUNDLE_PRICE}.00 pair offer.`;
+
     /* Trust badges */
     const trustBadges = document.createElement('div');
     trustBadges.className = 'product-trust-badges';
@@ -506,6 +518,7 @@ const ProductPage: PageComponent = {
     heroInfo.appendChild(colorNameEl);
     heroInfo.appendChild(colorSubtitleEl);
     heroInfo.appendChild(btnGroup);
+    heroInfo.appendChild(pairOfferNote);
     heroInfo.appendChild(trustBadges);
     heroInfo.appendChild(sellingList);
 

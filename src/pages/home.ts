@@ -1,6 +1,8 @@
 import type { PageComponent } from '../types';
 import { getPageParams, navigateTo } from '../router';
 import { analyticsEvents, trackEvent } from '../lib/analytics';
+import { getCountdownState } from '../lib/countdown';
+import { PAIR_BUNDLE_PRICE, PAIR_CAMPAIGN_END_AT } from '../siteConfig';
 
 const products = [
   {
@@ -125,12 +127,15 @@ const storyTeaserSlides = [
 let _observer: IntersectionObserver | null = null;
 let _heroCarouselTimer: number | null = null;
 let _storyCarouselTimer: number | null = null;
+let _pairCountdownTimer: number | null = null;
 
 const HomePage: PageComponent = {
   seo: {
-    title: 'The Fifth Stone | Myth-Inspired Stone Necklaces',
+    title: 'The Fifth Stone | Myth-Inspired Crystal Necklaces',
     description:
-      'Shop The Fifth Stone, a myth-inspired symbolic necklace collection made around repair, protection, and rebirth.',
+      'Shop The Fifth Stone myth-inspired crystal necklaces in five symbolic colors. Choose any two stones for the May pair offer and receive free shipping from China.',
+    image: '/hero-carousel/hero-1.webp',
+    imageAlt: 'The Fifth Stone symbolic necklace worn in warm light',
   },
 
   render() {
@@ -141,6 +146,10 @@ const HomePage: PageComponent = {
     if (_storyCarouselTimer !== null) {
       window.clearInterval(_storyCarouselTimer);
       _storyCarouselTimer = null;
+    }
+    if (_pairCountdownTimer !== null) {
+      window.clearInterval(_pairCountdownTimer);
+      _pairCountdownTimer = null;
     }
 
     const page = document.createElement('div');
@@ -295,6 +304,47 @@ const HomePage: PageComponent = {
         <button class="btn collection-cta" data-action="product">Choose Your Stone</button>
       </section>
 
+      <!-- ===== Pair Offer ===== -->
+      <section class="home-pair-offer section fade-section" aria-labelledby="pair-offer-title">
+        <div class="pair-offer-inner">
+          <div class="pair-offer-copy">
+            <p class="pair-offer-kicker">May Pair Offer</p>
+            <h2 id="pair-offer-title" class="pair-offer-title">Build Your Pair</h2>
+            <p class="pair-offer-lede">
+              Choose any two stones for <strong>$${PAIR_BUNDLE_PRICE}.00</strong>.
+              A gift-ready pairing for protection, renewal, warmth, courage, or quiet strength.
+            </p>
+            <p class="pair-offer-note">
+              Pair two meanings for one story, or keep one close and send one to someone who needs a little sky mended.
+              Free shipping from China is included during the offer.
+            </p>
+            <button class="btn pair-offer-cta" data-action="product">Choose Two Stones</button>
+          </div>
+          <aside class="pair-countdown" aria-label="May pair offer countdown">
+            <span class="pair-countdown-label">May Pair Offer Ends In</span>
+            <div class="pair-countdown-grid" aria-live="polite">
+              <span class="pair-countdown-unit">
+                <strong data-countdown-part="days">00</strong>
+                <small>Days</small>
+              </span>
+              <span class="pair-countdown-unit">
+                <strong data-countdown-part="hours">00</strong>
+                <small>Hours</small>
+              </span>
+              <span class="pair-countdown-unit">
+                <strong data-countdown-part="minutes">00</strong>
+                <small>Minutes</small>
+              </span>
+              <span class="pair-countdown-unit">
+                <strong data-countdown-part="seconds">00</strong>
+                <small>Seconds</small>
+              </span>
+            </div>
+            <p class="pair-countdown-expired">Pair styling is still available. Choose the two stones that belong together.</p>
+          </aside>
+        </div>
+      </section>
+
       <!-- ===== Trust Section ===== -->
       <section class="home-trust-section section section-center fade-section" aria-label="Trust and service highlights">
         <div class="home-trust-grid">
@@ -394,6 +444,31 @@ const HomePage: PageComponent = {
         navigateTo('collection', color ? { color } : undefined);
       });
     });
+
+    const pairCountdown = page.querySelector<HTMLElement>('.pair-countdown');
+    const pairCountdownParts = Array.from(
+      page.querySelectorAll<HTMLElement>('[data-countdown-part]'),
+    );
+    const updatePairCountdown = () => {
+      if (!pairCountdown) return;
+      const state = getCountdownState(PAIR_CAMPAIGN_END_AT);
+
+      pairCountdown.classList.toggle('expired', state.expired);
+      for (const el of pairCountdownParts) {
+        const key = el.dataset.countdownPart as keyof typeof state.parts | undefined;
+        if (!key) continue;
+        el.textContent = String(state.parts[key]).padStart(2, '0');
+      }
+
+      if (state.expired && _pairCountdownTimer !== null) {
+        window.clearInterval(_pairCountdownTimer);
+        _pairCountdownTimer = null;
+      }
+    };
+    updatePairCountdown();
+    if (pairCountdown && !pairCountdown.classList.contains('expired')) {
+      _pairCountdownTimer = window.setInterval(updatePairCountdown, 1000);
+    }
 
     const hero = page.querySelector('.home-hero');
     const heroSlideEls = Array.from(page.querySelectorAll<HTMLElement>('.hero-slide'));
@@ -566,6 +641,10 @@ const HomePage: PageComponent = {
     if (_storyCarouselTimer !== null) {
       window.clearInterval(_storyCarouselTimer);
       _storyCarouselTimer = null;
+    }
+    if (_pairCountdownTimer !== null) {
+      window.clearInterval(_pairCountdownTimer);
+      _pairCountdownTimer = null;
     }
   },
 };

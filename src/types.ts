@@ -7,6 +7,8 @@ export interface PageComponent {
 export interface PageSeo {
   title: string;
   description: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 export type PageName =
